@@ -3,9 +3,6 @@ import vercel from '@astrojs/vercel/serverless';
 
 export default defineConfig({
   output: 'hybrid',
-  adapter: vercel({
-    functionPerRoute: false,
-    nodeVersion: '20',
-  }),
+  adapter: vercel(),
   site: 'https://eaglobals.com',
 });
