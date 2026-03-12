@@ -1,0 +1,167 @@
+---
+const features = [
+  {
+    num: "01",
+    title: "Geniş Ürün Gamı",
+    desc: "Metal işleme yağlarından filtrasyon sistemlerine, greslerden bakım spreylerine 500'den fazla ürün tek çatı altında.",
+  },
+  {
+    num: "02",
+    title: "Global Lojistik",
+    desc: "50'den fazla ülkeye ihracat kapasitesi. Gümrük, belgelendirme ve lojistik süreçlerini uçtan uca yönetiyoruz.",
+  },
+  {
+    num: "03",
+    title: "Teknik Danışmanlık",
+    desc: "Üretim koşullarınıza en uygun ürünü birlikte seçiyoruz. Uygulama ve konsantrasyon desteği sağlıyoruz.",
+  },
+  {
+    num: "04",
+    title: "Hızlı & Güvenli Teslimat",
+    desc: "Köklü lojistik partnerliklerimizle yurt içinde aynı gün, yurt dışında zamanında teslimat.",
+  },
+];
+
+const sectors = [
+  "Havacılık", "Otomotiv", "Makina İmalatı", "Metal İşleme",
+  "Gıda Endüstrisi", "Tekstil", "Madencilik", "Denizcilik",
+  "Raylı Ulaşım", "Tarım", "Medikal Teknoloji", "Elektrik-Elektronik"
+];
+
+const partners = [
+  "Rhenus Lub GmbH", "Servlub", "CRC Industries", "Dosatron International",
+  "Servtexx", "Servmatik", "H2O GmbH", "Steelfluid S.r.l", "Proloc", "Boğaziçi Endüstriyel"
+];
+---
+
+<section class="section" id="hakkimizda">
+  <div class="container">
+    <div class="about__grid">
+      <div class="about__left">
+        <div class="section-label">Hakkımızda</div>
+        <h2 class="section-title">Endüstriyel Kimyasalda<br/><em style="font-style:italic;color:var(--red)">Güvenilir Tedarikçi</em></h2>
+        <p class="about__text">
+          EA Globals Import & Export olarak yurt içi ve yurt dışındaki üretim firmalarına endüstriyel yağ, gres ve bakım kimyasalları tedarik ediyoruz. Hızlı teslimat, teknik destek ve rekabetçi fiyatlarla sektörünüzde fark yaratmanıza yardımcı oluyoruz.
+        </p>
+        <div class="about__sectors">
+          <div class="sectors-label">Hizmet Verdiğimiz Sektörler</div>
+          <div class="sectors-list">
+            {sectors.map(s => <span class="sector-chip">{s}</span>)}
+          </div>
+        </div>
+      </div>
+
+      <div class="about__right">
+        {features.map(f => (
+          <div class="feature-item">
+            <div class="feature-item__num">{f.num}</div>
+            <div>
+              <h3 class="feature-item__title">{f.title}</h3>
+              <p class="feature-item__desc">{f.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Partners marquee -->
+<div class="partners-bar">
+  <div class="partners-bar__inner">
+    <div class="marquee-track">
+      {[...partners, ...partners].map(p => (
+        <span class="partner-item">{p}</span>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+.about__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
+}
+.about__text {
+  font-size: 0.95rem;
+  color: var(--gray-500);
+  line-height: 1.75;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+.sectors-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: 0.75rem;
+}
+.sectors-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.sector-chip {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--gray-200);
+  border-radius: 100px;
+  color: var(--gray-700);
+  font-weight: 500;
+  transition: all var(--transition);
+}
+.sector-chip:hover {
+  border-color: var(--red);
+  color: var(--red);
+  background: rgba(200,16,46,0.04);
+}
+
+.feature-item {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+.feature-item:first-child { padding-top: 0; }
+.feature-item:last-child { border-bottom: none; }
+.feature-item__num {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--red);
+  opacity: 0.4;
+  flex-shrink: 0;
+  min-width: 36px;
+  padding-top: 2px;
+}
+.feature-item__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+.feature-item__desc {
+  font-size: 0.85rem;
+  color: var(--gray-500);
+  line-height: 1.6;
+}
+
+/* Partners marquee */
+.partners-bar { background: var(--black); padding: 1.25rem 0; overflow: hidden; position: relative; }
+.partners-bar::before, .partners-bar::after { content: ''; position: absolute; top: 0; bottom: 0; width: 100px; z-index: 2; pointer-events: none; }
+.partners-bar::before { left: 0; background: linear-gradient(to right, var(--black), transparent); }
+.partners-bar::after { right: 0; background: linear-gradient(to left, var(--black), transparent); }
+.partners-bar__inner { overflow: hidden; }
+.marquee-track { display: flex; width: max-content; animation: marquee 30s linear infinite; align-items: center; gap: 0; }
+.marquee-track:hover { animation-play-state: paused; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.partner-item { font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,0.4); white-space: nowrap; transition: color var(--transition); letter-spacing: 0.04em; cursor: default; padding: 0 1.5rem; }
+.partner-item:hover { color: rgba(255,255,255,0.9); }
+.partner-item + .partner-item::before { content: '·'; margin-right: 1.5rem; color: rgba(255,255,255,0.15); }
+
+@media (max-width: 900px) {
+  .about__grid { grid-template-columns: 1fr; gap: 3rem; }
+}
+</style>

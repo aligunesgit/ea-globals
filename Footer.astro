@@ -1,0 +1,112 @@
+---
+---
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <img src="/images/logo.png" alt="EA Globals" height="48" />
+      <p class="footer__tagline">
+        Metal işleme yağları, gresler, bakım kimyasalları ve filtrasyon sistemleri — 500+ ürün, dünya genelinde teslimat.
+      </p>
+    </div>
+
+    <div class="footer__links">
+      <div class="footer-col">
+        <div class="footer-col__title">Kurumsal</div>
+        <a href="#hakkimizda">Hakkımızda</a>
+        <a href="#neden-biz">Neden Biz</a>
+        <a href="#iletisim">İletişim</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col__title">Ürünler</div>
+        <a href="#urunler">Metal İşleme Yağları</a>
+        <a href="#urunler">Gresler</a>
+        <a href="#urunler">CRC Kimyasalları</a>
+        <a href="#urunler">Dosatron Pompaları</a>
+        <a href="#urunler">Filtrasyon Sistemleri</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col__title">İletişim</div>
+        <a href="mailto:info@eaglobals.com">info@eaglobals.com</a>
+        <a href="mailto:export@eaglobals.com">export@eaglobals.com</a>
+        <a href="tel:+90XXXXXXXXXX">+90 XXX XXX XX XX</a>
+        <span>İstanbul, Türkiye</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <div class="container footer__bottom-inner">
+      <span>© {new Date().getFullYear()} EA Globals Import & Export. Tüm hakları saklıdır.</span>
+      <span class="footer__partner">eaglobals.com</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+.footer {
+  background: var(--gray-900);
+  color: rgba(255,255,255,0.6);
+}
+.footer__inner {
+  display: grid;
+  grid-template-columns: 1.5fr 2fr;
+  gap: 4rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+.footer__brand img { filter: brightness(0) invert(1); opacity: 0.9; margin-bottom: 1rem; }
+.footer__tagline {
+  font-size: 0.85rem;
+  line-height: 1.7;
+  max-width: 280px;
+}
+.footer__links {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+.footer-col { display: flex; flex-direction: column; gap: 0.6rem; }
+.footer-col__title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--white);
+  margin-bottom: 0.25rem;
+}
+.footer-col a, .footer-col span {
+  font-size: 0.85rem;
+  transition: color var(--transition);
+}
+.footer-col a:hover { color: var(--white); }
+.footer__bottom {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 1.25rem 0;
+}
+.footer__bottom-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+}
+.footer__partner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255,255,255,0.35);
+}
+.footer__partner::before {
+  content: '●';
+  color: var(--red);
+  font-size: 0.5rem;
+}
+
+@media (max-width: 900px) {
+  .footer__inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  .footer__links { grid-template-columns: 1fr 1fr; }
+  .footer__bottom-inner { flex-direction: column; gap: 0.5rem; text-align: center; }
+}
+@media (max-width: 520px) {
+  .footer__links { grid-template-columns: 1fr; }
+}
+</style>

@@ -1,0 +1,266 @@
+---
+---
+<section class="hero">
+  <div class="hero__bg">
+    <div class="hero__grid"></div>
+    <div class="hero__blob blob-1"></div>
+    <div class="hero__blob blob-2"></div>
+  </div>
+  <div class="container hero__inner">
+    <div class="hero__content">
+      <div class="hero__badge animate-fadeUp">
+        <span class="dot"></span>
+        Metal İşleme · Gresler · Bakım Kimyasalları · Filtrasyon
+      </div>
+      <h1 class="hero__title animate-fadeUp delay-1">
+        Her Endüstri için<br />
+        <em>Doğru Yağ,</em><br />
+        Doğru Çözüm
+      </h1>
+      <p class="hero__desc animate-fadeUp delay-2">
+        500'den fazla endüstriyel ürün — metal işleme yağlarından filtrasyon sistemlerine, bakım spreylerine kadar — dünya genelinde tedarik ediyoruz.
+      </p>
+      <div class="hero__actions animate-fadeUp delay-3">
+        <a href="#urunler" class="btn btn-primary">
+          Ürün Kataloğu
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#teklif" class="btn btn-outline">Teklif İste</a>
+      </div>
+      <div class="hero__stats animate-fadeUp delay-4">
+        <div class="stat">
+          <span class="stat__num">20+</span>
+          <span class="stat__label">Yıllık Tecrübe</span>
+        </div>
+        <div class="stat__divider"></div>
+        <div class="stat">
+          <span class="stat__num">500+</span>
+          <span class="stat__label">Ürün Çeşidi</span>
+        </div>
+        <div class="stat__divider"></div>
+        <div class="stat">
+          <span class="stat__num">50+</span>
+          <span class="stat__label">Ülkeye İhracat</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero__visual animate-fadeIn delay-2">
+      <div class="hero__card card-1">
+        <div class="card-icon">⚙️</div>
+        <div>
+          <div class="card-title">Metal İşleme Yağları</div>
+          <div class="card-sub">Su bazlı · Saf Kesme · MQL</div>
+        </div>
+      </div>
+      <div class="hero__card card-2">
+        <div class="card-icon">🌍</div>
+        <div>
+          <div class="card-title">Global Teslimat</div>
+          <div class="card-sub">50+ ülkeye ihracat</div>
+        </div>
+      </div>
+      <div class="hero__card card-3">
+        <div class="card-icon">🧪</div>
+        <div>
+          <div class="card-title">Bakım Kimyasalları</div>
+          <div class="card-sub">CRC · Proloc spreyleri</div>
+        </div>
+      </div>
+      <div class="hero__orb"></div>
+    </div>
+  </div>
+  <div class="hero__scroll">
+    <span>Aşağı Kaydır</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<style>
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding-top: 72px;
+}
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.hero__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(200,16,46,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,16,46,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero__blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+}
+.blob-1 {
+  width: 600px; height: 600px;
+  background: rgba(200,16,46,0.06);
+  top: -200px; right: -100px;
+}
+.blob-2 {
+  width: 400px; height: 400px;
+  background: rgba(200,16,46,0.04);
+  bottom: -100px; left: -100px;
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--red);
+  background: rgba(200,16,46,0.06);
+  padding: 0.4rem 0.9rem;
+  border-radius: 100px;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(200,16,46,0.15);
+  opacity: 0;
+}
+.dot {
+  width: 6px; height: 6px;
+  background: var(--red);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.4); }
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 400;
+  line-height: 1.05;
+  color: var(--black);
+  margin-bottom: 1.5rem;
+  opacity: 0;
+}
+.hero__title em {
+  font-style: italic;
+  color: var(--red);
+}
+.hero__desc {
+  font-size: 1.05rem;
+  color: var(--gray-500);
+  line-height: 1.75;
+  margin-bottom: 2rem;
+  max-width: 480px;
+  opacity: 0;
+}
+.hero__actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+  opacity: 0;
+}
+.hero__stats {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  opacity: 0;
+}
+.stat { display: flex; flex-direction: column; gap: 0.2rem; }
+.stat__num {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  color: var(--black);
+  line-height: 1;
+}
+.stat__label { font-size: 0.75rem; color: var(--gray-500); font-weight: 500; }
+.stat__divider { width: 1px; height: 36px; background: var(--gray-200); }
+
+/* Visual side */
+.hero__visual {
+  position: relative;
+  height: 420px;
+  opacity: 0;
+}
+.hero__orb {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,16,46,0.08) 0%, transparent 70%);
+  border: 1px solid rgba(200,16,46,0.1);
+}
+.hero__card {
+  position: absolute;
+  background: var(--white);
+  border: 1px solid var(--gray-100);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: var(--shadow-md);
+  animation: float 6s ease-in-out infinite;
+}
+.card-icon { font-size: 1.5rem; }
+.card-title { font-size: 0.85rem; font-weight: 600; }
+.card-sub { font-size: 0.7rem; color: var(--gray-500); }
+.card-1 { top: 10%; left: 5%; animation-delay: 0s; }
+.card-2 { top: 40%; right: 0%; animation-delay: 2s; }
+.card-3 { bottom: 10%; left: 20%; animation-delay: 4s; }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.hero__scroll {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--gray-300);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.scroll-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, var(--gray-300), transparent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+@keyframes scrollLine {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+@media (max-width: 900px) {
+  .hero__inner { grid-template-columns: 1fr; }
+  .hero__visual { display: none; }
+  .hero__title { font-size: 2.5rem; }
+}
+</style>

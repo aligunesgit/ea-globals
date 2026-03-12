@@ -1,0 +1,219 @@
+---
+const categories = [
+  {
+    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3h18v18H3z" rx="2"/><path d="M3 9h18M9 21V9"/></svg>`,
+    title: "Metal İşleme Yağları",
+    desc: "Talaşlı imalat, taşlama ve şekillendirme operasyonları için yüksek performanslı kesme ve soğutma yağları.",
+    tags: ["Su Bazlı", "Saf Kesme", "MQL", "Şekillendirme"],
+    brands: "Rhenus Lub · Servlub",
+  },
+  {
+    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>`,
+    title: "Gresler",
+    desc: "Rulman, dişli ve kaymalı yüzeyler için uzun ömürlü, yüksek basınç ve sıcaklığa dayanıklı formülasyonlar.",
+    tags: ["Gıda Uyumlu", "Biobozunur", "Yüksek Sıcaklık", "EP Katkılı"],
+    brands: "Rhenus Lub · Servlub",
+  },
+  {
+    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
+    title: "Bakım Kimyasalları & Spreyleri",
+    desc: "Penetrantlar, pas sökücüler, korozyon önleyiciler, temizleyiciler ve kaynak yardımcı ürünleri.",
+    tags: ["Penetrant", "Pas Sökücü", "Korozyon Önleyici", "Elektronik"],
+    brands: "CRC Industries · Proloc",
+  },
+  {
+    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>`,
+    title: "Endüstriyel Yağlar",
+    desc: "Hidrolik sistemler, dişli kutuları, sirkülasyon hatları ve zincirler için özel formüle edilmiş yağlar.",
+    tags: ["Hidrolik", "Sirkülasyon", "Dişli", "Zincir"],
+    brands: "Rhenus Lub",
+  },
+  {
+    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>`,
+    title: "Dozaj Pompaları",
+    desc: "Su basıncıyla çalışan, elektrik gerektirmeyen hassas kimyasal dozaj sistemleri. D3'ten D45'e tüm seriler.",
+    tags: ["D3–D45 Serisi", "Elektriksiz", "Hassas Dozaj", "Tarım & Sanayi"],
+    brands: "Dosatron International",
+  },
+  {
+    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
+    title: "Filtrasyon & Arıtma Sistemleri",
+    desc: "Merkezi filtrasyon üniteleri, yağ sıyırıcılar, filtre kağıtları ve endüstriyel atık su arıtma ekipmanları.",
+    tags: ["Merkezi Filtrasyon", "Yağ Sıyırıcı", "Filtre Kağıdı", "Atık Su Arıtma"],
+    brands: "Servmatik · Servtexx · H2O GmbH",
+  },
+];
+---
+
+<section class="section section--gray" id="urunler">
+  <div class="container">
+    <div class="products__header">
+      <div>
+        <div class="section-label">Ürün Portföyü</div>
+        <h2 class="section-title">Her Endüstriye Özel<br/>Yağ & Kimyasal Çözümleri</h2>
+        <p class="section-subtitle">
+          Kesme, soğutma, koruma, temizleme ve filtrasyon — tüm süreçler için doğru ürün.
+        </p>
+      </div>
+      <a href="#teklif" class="btn btn-outline products__cta">Tümü için Teklif Al</a>
+    </div>
+
+    <div class="products__grid">
+      {categories.map((cat, i) => (
+        <div class="product-card" style={`animation-delay: ${i * 0.1}s`}>
+          <div class="product-card__icon">
+            <Fragment set:html={cat.icon} />
+          </div>
+          <div class="product-card__brand">{cat.brands}</div>
+          <h3 class="product-card__title">{cat.title}</h3>
+          <p class="product-card__desc">{cat.desc}</p>
+          <div class="product-card__tags">
+            {cat.tags.map(tag => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+          <a href="#teklif" class="product-card__link">
+            Teklif İste
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <div class="products__note">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      500'den fazla ürün çeşidi sunuyoruz. Aradığınız ürünü listede bulamadıysanız teklif formunu doldurun, en uygun çözümü birlikte bulalım.
+    </div>
+  </div>
+</section>
+
+<style>
+.products__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 3rem;
+  gap: 2rem;
+}
+.products__cta { align-self: flex-end; flex-shrink: 0; }
+
+.products__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.product-card {
+  background: var(--white);
+  border: 1px solid var(--gray-100);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  transition: all var(--transition);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards;
+}
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition);
+}
+.product-card:hover {
+  border-color: var(--gray-200);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+.product-card:hover::before { transform: scaleX(1); }
+
+.product-card__icon {
+  width: 52px; height: 52px;
+  background: var(--gray-50);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--red);
+  margin-bottom: 0.5rem;
+  transition: background var(--transition);
+}
+.product-card:hover .product-card__icon {
+  background: rgba(200,16,46,0.06);
+}
+
+.product-card__brand {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+.product-card__title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--black);
+  line-height: 1.3;
+}
+.product-card__desc {
+  font-size: 0.85rem;
+  color: var(--gray-500);
+  line-height: 1.6;
+  flex: 1;
+}
+.product-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+.tag {
+  font-size: 0.68rem;
+  font-weight: 500;
+  padding: 0.25rem 0.6rem;
+  background: var(--gray-100);
+  border-radius: 100px;
+  color: var(--gray-700);
+}
+.product-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--red);
+  margin-top: 0.75rem;
+  transition: gap var(--transition);
+}
+.product-card__link:hover { gap: 0.6rem; }
+
+.products__note {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 2.5rem;
+  padding: 1rem 1.5rem;
+  background: var(--white);
+  border: 1px solid var(--gray-100);
+  border-radius: var(--radius-lg);
+  font-size: 0.85rem;
+  color: var(--gray-500);
+  color: var(--gray-700);
+}
+.products__note svg { color: var(--red); flex-shrink: 0; }
+
+@media (max-width: 1024px) {
+  .products__grid { grid-template-columns: repeat(2, 1fr); }
+  .products__header { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 640px) {
+  .products__grid { grid-template-columns: 1fr; }
+}
+</style>
