@@ -1,0 +1,427 @@
+---
+---
+
+<section class="section industries-section" id="sektorler">
+  <div class="container">
+    <div class="section-label">Hizmet Verdiğimiz Sektörler</div>
+    <h2 class="section-title">Endüstriye Göre<br/><em>Ürün Bulun</em></h2>
+    <p class="section-sub">Sektörünüzü seçin, size özel ürün portföyünü görüntüleyin.</p>
+    <div class="industries-layout">
+      <div class="cat-list" id="catList"></div>
+      <div class="product-panel" id="productPanel">
+        <div class="panel-placeholder">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <p>Bir sektör seçerek<br/>ürünleri görüntüleyin</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .industries-section { background: #f8f8f8; padding: 6rem 0; }
+  .section-label { font-size:.7rem; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--red); margin-bottom:1rem; display:flex; align-items:center; gap:.75rem; }
+  .section-label::before { content:""; display:inline-block; width:24px; height:2px; background:var(--red); }
+  .section-title { font-family:"DM Serif Display",serif; font-size:clamp(1.8rem,4vw,2.5rem); font-weight:400; line-height:1.15; margin-bottom:.75rem; }
+  .section-title em { font-style:italic; color:var(--red); }
+  .section-sub { font-size:1rem; color:#7a7a7a; margin-bottom:3rem; max-width:500px; }
+  .industries-layout { display:grid; grid-template-columns:280px 1fr; gap:2rem; align-items:start; }
+  .cat-list { display:flex; flex-direction:column; gap:.4rem; }
+  .cat-item { display:flex; align-items:center; gap:.85rem; padding:.8rem 1rem; border-radius:12px; cursor:pointer; transition:all 0.25s cubic-bezier(0.4,0,0.2,1); border:1.5px solid transparent; background:white; }
+  .cat-item:hover { border-color:#e8e8e8; box-shadow:0 4px 20px rgba(0,0,0,0.08); transform:translateX(3px); }
+  .cat-item.active { background:var(--red); border-color:var(--red); transform:translateX(6px); box-shadow:0 8px 24px rgba(200,16,46,.25); }
+  .cat-icon { width:40px; height:40px; border-radius:9px; background:#f4f4f4; display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; }
+  .cat-item.active .cat-icon { background:rgba(255,255,255,.15); }
+  .cat-name { font-size:.875rem; font-weight:600; color:#0D0D0D; transition:color 0.25s; }
+  .cat-item.active .cat-name { color:white; }
+  .cat-count { margin-left:auto; font-size:.65rem; font-weight:700; color:#7a7a7a; background:#f4f4f4; padding:2px 7px; border-radius:100px; transition:all 0.25s; flex-shrink:0; }
+  .cat-item.active .cat-count { background:rgba(255,255,255,.2); color:white; }
+  .product-panel { background:white; border-radius:16px; padding:1.75rem; box-shadow:0 4px 20px rgba(0,0,0,0.08); min-height:400px; animation:fadeSlide .3s ease; }
+  @keyframes fadeSlide { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  .panel-header { display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem; padding-bottom:1.25rem; border-bottom:1px solid #e8e8e8; }
+  .panel-icon { width:48px; height:48px; border-radius:10px; background:rgba(200,16,46,.08); display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0; }
+  .panel-title { font-family:"DM Serif Display",serif; font-size:1.4rem; font-weight:400; }
+  .panel-desc { font-size:.82rem; color:#7a7a7a; margin-top:2px; }
+  .panel-meta { font-size:.75rem; color:var(--red); font-weight:600; margin-top:3px; }
+  .filter-tabs { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1.25rem; }
+  .filter-tab { font-size:.72rem; font-weight:600; padding:.35rem .85rem; border-radius:100px; border:1.5px solid #e8e8e8; background:white; cursor:pointer; transition:all 0.25s; color:#3d3d3d; }
+  .filter-tab:hover { border-color:var(--red); color:var(--red); }
+  .filter-tab.active { background:var(--red); border-color:var(--red); color:white; }
+  .products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:1rem; }
+  .product-card { border:1.5px solid #e8e8e8; border-radius:12px; overflow:hidden; transition:all 0.25s; }
+  .product-card:hover { border-color:rgba(200,16,46,.25); box-shadow:0 8px 24px rgba(0,0,0,.09); transform:translateY(-3px); }
+  .product-img { width:100%; height:130px; object-fit:contain; background:#fafafa; padding:12px; display:block; }
+  .product-body { padding:1rem; }
+  .product-tag { font-size:.62rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--red); background:rgba(200,16,46,.07); padding:2px 7px; border-radius:100px; display:inline-block; margin-bottom:.6rem; }
+  .product-name { font-size:.85rem; font-weight:600; color:#0D0D0D; line-height:1.3; margin-bottom:.75rem; }
+  .product-btn { display:inline-flex; align-items:center; gap:.4rem; font-size:.75rem; font-weight:600; color:var(--red); transition:gap 0.25s; text-decoration:none; }
+  .product-btn:hover { gap:.65rem; }
+  .panel-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; height:320px; color:#7a7a7a; text-align:center; gap:1rem; }
+  .panel-placeholder svg { opacity:.15; }
+  @media (max-width:768px) {
+    .industries-layout { grid-template-columns:1fr; }
+    .cat-list { flex-direction:row; flex-wrap:wrap; }
+    .cat-item { flex:1; min-width:130px; transform:none !important; }
+    .cat-count { display:none; }
+  }
+</style>
+
+<script>
+const data = {
+  "Kaynak": {
+    icon: "🔥",
+    desc: "Kaynak operasyonları için temizleyici, koruyucu ve yardımcı kimyasallar.",
+    products: [
+      { tag:"Korozyon Koruyucu", name:"CRC Pas Sökücü", img:"/images/products/rustremover250ml.png" },
+      { tag:"Boya", name:"CRC İşaretleme Kalemi", img:"/images/products/MarkerPen.jpg" },
+      { tag:"Kaynak", name:"CRC Eco Bio Weld", img:"/images/products/EcoBioWeld_500ML.png" },
+      { tag:"Çok Amaçlı", name:"CRC 5-56 PRO", img:"/images/products/5-56PRO500ML.png" },
+      { tag:"Temizleyici", name:"CRC Tekstil Temizleyici 500 ML", img:"/images/products/TextileClean500Ml.png" },
+      { tag:"Korozyon Koruyucu", name:"CRC Pas Önleyici 750 ML", img:"/images/products/RustSeal.png" },
+      { tag:"Temizleyici", name:"CRC INOX WELD KLEEN 2 KG", img:"/images/products/Inoxweldkleen.png" },
+      { tag:"Kaynak", name:"CRC Easy Weld 500 ML", img:"/images/products/easyweld.png" },
+      { tag:"Yağlayıcı", name:"CRC Kuru Molibden Yağlayıcı 500 ML", img:"/images/products/DRYMOLYLUBE500ML.png" },
+      { tag:"Kaynak", name:"CRC Crick 130 500 ML", img:"/images/products/crick130.png" },
+      { tag:"Kaynak", name:"CRC Crick 120 500 ML", img:"/images/products/crick120.png" },
+      { tag:"Kaynak", name:"CRC Crick 110 500 ML", img:"/images/products/crick110.png" },
+      { tag:"Temizleyici", name:"CRC BRAKLEEN VOC İçermeyen 400 ML", img:"/images/products/BRAKLEENVOCFREE.png" },
+      { tag:"Temizleyici", name:"CRC BRAKLEEN H2O 400 ML", img:"/images/products/BrakleenH2O.png" },
+      { tag:"Temizleyici", name:"CRC BRAKLEEN 20 500 ML", img:"/images/products/Brakleen20.png" },
+      { tag:"Kaynak", name:"CRC Sıçrama Önleyici Macun 500 ML", img:"/images/products/AntiSpatterPaste.png" },
+      { tag:"Kaynak", name:"CRC Sıçrama Önleyici 500 ML", img:"/images/products/antispatter.png" },
+      { tag:"Yağlayıcı", name:"CRC 5-56 250 ML", img:"/images/products/5-56-250ML.png" },
+      { tag:"Temizleyici", name:"Proloc Fren ve Temizleyici 500 ML", img:null },
+    ]
+  },
+  "Elektrik Bakım": {
+    icon: "⚡",
+    desc: "Elektrik panelleri, motor ve bağlantı elemanları için bakım ürünleri.",
+    products: [
+      { tag:"Temizleyici", name:"CRC QD-Kontak Temizleyici", img:"/images/products/qdcontactcleaner500ml.png" },
+      { tag:"Boya", name:"CRC İşaretleme Kalemi", img:"/images/products/MarkerPen.jpg" },
+      { tag:"Temizleyici", name:"CRC Lectra Clean II", img:"/images/products/LectraCleanII500ml.png" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Kontak Temizleyici FPS", img:"/images/products/ContactCleanerFPS-Gorsel.jpg" },
+      { tag:"Çok Amaçlı", name:"CRC 2-26", img:"/images/products/2-26_5L.png" },
+      { tag:"Temizleyici", name:"Proloc P271 Elektrik Kontak Temizleyici 400 ML", img:"/images/products/Proloc_P_271.jpg" },
+      { tag:"Temizleyici", name:"CRC Oxide Clean Plus 250 ML", img:"/images/products/oxidecleanplus.png" },
+      { tag:"Temizleyici", name:"CRC NF Elektronik Temizleyici 250 ML", img:"/images/products/nfelectroniccleaner.png" },
+      { tag:"Özel Ürünler", name:"CRC GD 265 250 ML", img:"/images/products/GD265.png" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC CONTACT CLEAN & PROTECT FPS 500 ML", img:"/images/products/ContactClean_ProtectFPS.jpg" },
+    ]
+  },
+  "Metal İşleme": {
+    icon: "⚙️",
+    desc: "Talaşlı imalat, taşlama ve metal işleme operasyonları için gres ve dozaj sistemleri.",
+    products: [
+      { tag:"Gres", name:"Rhenus LMN 2", img:null },
+      { tag:"Dozaj Pompası", name:"Dosatron D8RE5AF", img:"/images/products/D8RE5.jpg" },
+      { tag:"Dozaj Pompası", name:"Dosatron D8RE2AF", img:"/images/products/D8RE2.jpg" },
+      { tag:"Dozaj Pompası", name:"Dosatron D45RE8VF", img:"/images/products/D45RE8.jpg" },
+      { tag:"Dozaj Pompası", name:"Dosatron D45RE3VF", img:"/images/products/D45RE3.jpg" },
+      { tag:"Dozaj Pompası", name:"Dosatron D3RE25IEWVF", img:"/images/products/D3RE25IE.jpg" },
+      { tag:"Dozaj Pompası", name:"Dosatron D3TRE10VVFP", img:"/images/products/D3TRE10.jpg" },
+      { tag:"Dozaj Pompası", name:"Dosatron D3RE3000VFKP", img:"/images/products/D3RE3000.jpg" },
+      { tag:"Dozaj Pompası", name:"Dosatron D3IL10VVF", img:"/images/products/D3IL10.jpg" },
+    ]
+  },
+  "Otomotiv": {
+    icon: "🚗",
+    desc: "Otomotiv üretim ve bakım tesisleri için yağlayıcı, temizleyici ve korozyon önleyiciler.",
+    products: [
+      { tag:"Gres", name:"Rhenus LMN 2", img:null },
+      { tag:"Gres", name:"Rhenus WBN 2 4,5 KG", img:"/images/products/wbn2.jpg" },
+      { tag:"Boya", name:"CRC İşaretleme Kalemi", img:"/images/products/MarkerPen.jpg" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Endüstriyel Eko Yağ Sökücü FPS", img:"/images/products/IndustrialEcoDegreaser.jpg" },
+      { tag:"Temizleyici", name:"CRC Hızlı Kuruyan Yağ Çözücü", img:"/images/products/fastdrydegreaser500.png" },
+      { tag:"Pas Sökücü", name:"CRC Evapo-Rust", img:"/images/products/Evapo-Rust_1L.png" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Eco Complex Blue FPS", img:"/images/products/EcoComplexBlue-1L.jpg" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Kontak Temizleyici FPS", img:"/images/products/ContactCleanerFPS-Gorsel.jpg" },
+      { tag:"Çok Amaçlı", name:"CRC 5-56 PRO", img:"/images/products/5-56PRO500ML.png" },
+      { tag:"Çok Amaçlı", name:"CRC 3-36 FPS", img:"/images/products/3-36_250ml.jpg" },
+      { tag:"Yağlayıcı", name:"CRC Multilube Pro 500 ML", img:"/images/products/MultiLubePRO500ML.png" },
+      { tag:"Yağlayıcı", name:"Proloc P216 Sıvı Gres Spreyi 500 ML", img:"/images/products/Proloc_P_216.jpg" },
+      { tag:"Yağlayıcı", name:"Proloc P273 Silikon Kayganlaştırıcı 400 ML", img:"/images/products/Proloc_P_273.jpg" },
+      { tag:"Temizleyici", name:"Proloc Fren ve Temizleyici 500 ML", img:null },
+      { tag:"Temizleyici", name:"CRC Tekstil Temizleyici 500 ML", img:"/images/products/TextileClean500Ml.png" },
+      { tag:"Pas Sökücü", name:"CRC Rost Flash IND 500 ML", img:"/images/products/rostflashind500ml.png" },
+      { tag:"Özel Ürünler", name:"CRC Düşük Sıcaklıkta Sızıntı Bulucu 500 ML", img:"/images/products/LowTempLeakFinder.png" },
+      { tag:"Özel Ürünler", name:"CRC Sızıntı Bulucu PMUC 500 ML", img:"/images/products/leakfinderpmuc.png" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Inox Kleen FPS 500 ML", img:"/images/products/Inoxkleenfps500.png" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Endüstriyel Yağ Sökücü FPS 500 ML", img:"/images/products/IndustrialDegreaserFPS500ML.jpg" },
+      { tag:"Yağlayıcı", name:"CRC Yüksek Sıcaklık Gres Yağı 100 ML", img:"/images/products/hightempgrease100ML.png" },
+      { tag:"Yağlayıcı", name:"CRC Yüksek Hızlı Gres Yağı 500 ML", img:"/images/products/HighSpeedGrease.png" },
+      { tag:"Yağlayıcı", name:"CRC Yüksek Hızlı Zincir Yağı 500 ML", img:"/images/products/highspeedchain_500_ML.png" },
+      { tag:"Temizleyici", name:"CRC Glass Clean PRO 500 ML", img:"/images/products/GlassClean500ml.png" },
+      { tag:"Pas Sökücü", name:"CRC Ferrokleen 5 KG", img:"/images/products/ferrokleen.png" },
+      { tag:"Gıda Onaylı Yağlayıcı", name:"CRC Extreme Lube FPS Perma-Lock 500 ML", img:"/images/products/extremelubefps.png" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC ECO Köpük Temizleyici FPS 500 ML", img:"/images/products/ecofoamcleaner.png" },
+      { tag:"Yağlayıcı", name:"CRC Kuru Yağlayıcı 500 ML", img:"/images/products/DRYLUBE500ML.png" },
+      { tag:"Yağlayıcı", name:"CRC Zincir Yağı IND 500 ML", img:"/images/products/ChainLubeIND.png" },
+      { tag:"Gıda Onaylı Yağlayıcı", name:"CRC Zincir Yağı FPS Perma-Lock 500 ML", img:"/images/products/chainlubefps.png" },
+      { tag:"Yağlayıcı", name:"CRC Seramik Macunu 12x250 ML", img:"/images/products/CeramicPaste.png" },
+      { tag:"Temizleyici", name:"CRC BRAKLEEN VOC İçermeyen 400 ML", img:"/images/products/BRAKLEENVOCFREE.png" },
+      { tag:"Temizleyici", name:"CRC BRAKLEEN H2O 400 ML", img:"/images/products/BrakleenH2O.png" },
+      { tag:"Temizleyici", name:"CRC BRAKLEEN 20 500 ML", img:"/images/products/Brakleen20.png" },
+      { tag:"Korozyon Koruyucu", name:"CRC Alu HiTemp 500 ML", img:"/images/products/aluhightemp.png" },
+      { tag:"Yağlayıcı", name:"CRC 5-56 250 ML", img:"/images/products/5-56-250ML.png" },
+      { tag:"Yağlayıcı", name:"CRC Kemer Tutucu IND 500 ML", img:"/images/products/beltgripind.png" },
+      { tag:"Gıda Onaylı Yağlayıcı", name:"CRC Kemer Tipi FPS Perma-Lock 500 ML", img:"/images/products/beltgripfps.png" },
+    ]
+  },
+  "Mekanik Bakım": {
+    icon: "🔧",
+    desc: "Makine bakım ve onarımı için penetrantlar, gresler, yağlayıcılar ve temizleyiciler.",
+    products: [
+      { tag:"Yağlayıcı", name:"CRC Supercut 250 ML", img:"/images/products/Supercut250.png" },
+      { tag:"Korozyon Koruyucu", name:"CRC SP 400", img:"/images/products/sp400-250.png" },
+      { tag:"Korozyon Koruyucu", name:"CRC SP 350", img:"/images/products/sp350_500ML.png" },
+      { tag:"Korozyon Koruyucu", name:"CRC Pas Sökücü", img:"/images/products/rustremover250ml.png" },
+      { tag:"Boya", name:"CRC İşaretleme Kalemi", img:"/images/products/MarkerPen.jpg" },
+      { tag:"Temizleyici", name:"CRC Lectra Clean II", img:"/images/products/LectraCleanII500ml.png" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Endüstriyel Eko Yağ Sökücü FPS", img:"/images/products/IndustrialEcoDegreaser.jpg" },
+      { tag:"Temizleyici", name:"CRC Hızlı Kuruyan Yağ Çözücü", img:"/images/products/fastdrydegreaser500.png" },
+      { tag:"Pas Sökücü", name:"CRC Evapo-Rust", img:"/images/products/Evapo-Rust_1L.png" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Eco Complex Blue FPS", img:"/images/products/EcoComplexBlue-1L.jpg" },
+      { tag:"Çok Amaçlı", name:"CRC 5-56 PRO", img:"/images/products/5-56PRO500ML.png" },
+      { tag:"Çok Amaçlı", name:"CRC 3-36 FPS", img:"/images/products/3-36_250ml.jpg" },
+      { tag:"Yağlayıcı", name:"Proloc P273 Silikon Kayganlaştırıcı 400 ML", img:"/images/products/Proloc_P_273.jpg" },
+      { tag:"Yağlayıcı", name:"Proloc P270 Nüfuz Edici Yağ Spreyi 400 ML", img:"/images/products/Proloc_P_270.jpg" },
+      { tag:"Pas Sökücü", name:"Proloc P240G Silah Bakım Korozyon Önleyici 400 ML", img:"/images/products/Proloc_P_240G.jpg" },
+      { tag:"Yağlayıcı", name:"Proloc P216 Sıvı Gres Spreyi 500 ML", img:"/images/products/Proloc_P_216.jpg" },
+      { tag:"Temizleyici", name:"Proloc Fren ve Temizleyici 500 ML", img:null },
+      { tag:"Yağlayıcı", name:"CRC Tel Halat Yağlayıcı 500 ML", img:"/images/products/wireropelube500ML.png" },
+      { tag:"Yağlayıcı", name:"CRC Beyaz Lityum Gres Yağı 500 ML", img:"/images/products/WhiteLithiumGrease500ml.png" },
+      { tag:"Yağlayıcı", name:"AC WG-90 500 ML", img:"/images/products/WG-90.png" },
+      { tag:"Yağlayıcı", name:"CRC Sentetik Gres Yağı 500 ML", img:"/images/products/SyntheticGrease.png" },
+      { tag:"Yağlayıcı", name:"CRC Süper Kılavuz Çekme Sıvısı 250 ML", img:"/images/products/supertappingfluid.png" },
+      { tag:"Yağlayıcı", name:"CRC Silikon Gres Yağı 400 ML", img:"/images/products/siliconegrease400ML.png" },
+      { tag:"Korozyon Koruyucu", name:"CRC Pas Önleyici 750 ML", img:"/images/products/RustSeal.png" },
+      { tag:"Pas Sökücü", name:"CRC Rost Flash IND 500 ML", img:"/images/products/rostflashind500ml.png" },
+      { tag:"Yağlayıcı", name:"CRC Multilube Pro 500 ML", img:"/images/products/MultiLubePRO500ML.png" },
+      { tag:"Özel Ürünler", name:"CRC Düşük Sıcaklıkta Sızıntı Bulucu 500 ML", img:"/images/products/LowTempLeakFinder.png" },
+      { tag:"Özel Ürünler", name:"CRC Sızıntı Bulucu PMUC 500 ML", img:"/images/products/leakfinderpmuc.png" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Inox Kleen FPS 500 ML", img:"/images/products/Inoxkleenfps500.png" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Endüstriyel Yağ Sökücü FPS 500 ML", img:"/images/products/IndustrialDegreaserFPS500ML.jpg" },
+      { tag:"Yağlayıcı", name:"CRC Yüksek Sıcaklık Gres Yağı 100 ML", img:"/images/products/hightempgrease100ML.png" },
+      { tag:"Yağlayıcı", name:"CRC Yüksek Hızlı Gres Yağı 500 ML", img:"/images/products/HighSpeedGrease.png" },
+      { tag:"Yağlayıcı", name:"CRC Yüksek Hızlı Zincir Yağı 500 ML", img:"/images/products/highspeedchain_500_ML.png" },
+      { tag:"Temizleyici", name:"CRC Grafiti Temizleyici 400 ML", img:"/images/products/GraffitiRemover.png" },
+      { tag:"Temizleyici", name:"CRC Glass Clean PRO 500 ML", img:"/images/products/GlassClean500ml.png" },
+      { tag:"Pas Sökücü", name:"CRC Ferrokleen 5 KG", img:"/images/products/ferrokleen.png" },
+      { tag:"Gıda Onaylı Yağlayıcı", name:"CRC Extreme Lube FPS Perma-Lock 500 ML", img:"/images/products/extremelubefps.png" },
+      { tag:"Yağlayıcı", name:"CRC Kuru Yağlayıcı 500 ML", img:"/images/products/DRYLUBE500ML.png" },
+      { tag:"Yağlayıcı", name:"CRC Zincir Yağı IND 500 ML", img:"/images/products/ChainLubeIND.png" },
+      { tag:"Gıda Onaylı Yağlayıcı", name:"CRC Zincir Yağı FPS Perma-Lock 500 ML", img:"/images/products/chainlubefps.png" },
+      { tag:"Yağlayıcı", name:"CRC Seramik Macunu 12x250 ML", img:"/images/products/CeramicPaste.png" },
+      { tag:"Temizleyici", name:"CRC BRAKLEEN VOC İçermeyen 400 ML", img:"/images/products/BRAKLEENVOCFREE.png" },
+      { tag:"Temizleyici", name:"CRC BRAKLEEN H2O 400 ML", img:"/images/products/BrakleenH2O.png" },
+      { tag:"Temizleyici", name:"CRC BRAKLEEN 20 500 ML", img:"/images/products/Brakleen20.png" },
+      { tag:"Korozyon Koruyucu", name:"CRC Alu HiTemp 500 ML", img:"/images/products/aluhightemp.png" },
+      { tag:"Yağlayıcı", name:"CRC 5-56 250 ML", img:"/images/products/5-56-250ML.png" },
+    ]
+  },
+  "Gıda": {
+    icon: "🌾",
+    desc: "NSF H1 onaylı, gıda tesisleri için güvenli yağlayıcı, gres ve temizleyiciler.",
+    products: [
+      { tag:"Gres", name:"Rhenus ADC Serisi 4,5 KG", img:"/images/products/rhenusadcserisi.png" },
+      { tag:"Gres", name:"Rhenus ACN 15 GR 4,5 KG", img:"/images/products/rhenusacn15gr.png" },
+      { tag:"Gres", name:"Rhenus ACN Serisi 4,5 KG", img:"/images/products/rhenusacnseries.png" },
+      { tag:"Gres", name:"Rhenus WAO 2 4,5 KG", img:"/images/products/rhenuswao2.png" },
+      { tag:"Boya", name:"CRC İşaretleme Kalemi", img:"/images/products/MarkerPen.jpg" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Endüstriyel Eko Yağ Sökücü FPS", img:"/images/products/IndustrialEcoDegreaser.jpg" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Eco Complex Blue FPS", img:"/images/products/EcoComplexBlue-1L.jpg" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Kontak Temizleyici FPS", img:"/images/products/ContactCleanerFPS-Gorsel.jpg" },
+      { tag:"Çok Amaçlı", name:"CRC 3-36 FPS", img:"/images/products/3-36_250ml.jpg" },
+      { tag:"Gıda Onaylı Yağlayıcı", name:"CRC Silikon FPS Perma-Lock 500 ML", img:"/images/products/siliconefpspermalock500ml.png" },
+      { tag:"Gıda Onaylı Yağlayıcı", name:"CRC Pen Oil FPS Perma-Lock 500 ML", img:"/images/products/PenOilFPS.jpg" },
+      { tag:"Yağlayıcı", name:"CRC Multilube Pro 500 ML", img:"/images/products/MultiLubePRO500ML.png" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Inox Kleen FPS 500 ML", img:"/images/products/Inoxkleenfps500.png" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Endüstriyel Yağ Sökücü FPS 500 ML", img:"/images/products/IndustrialDegreaserFPS500ML.jpg" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Hidroelektrik Santrali FPS 400 ML", img:"/images/products/HydroPower.png" },
+      { tag:"Gıda Onaylı Yağlayıcı", name:"CRC Yüksek Sıcaklıkta Gıda Yağı FPS 400 G", img:"/images/products/hi-tempfoodgrease.png" },
+      { tag:"Gıda Onaylı Yağlayıcı", name:"CRC Gıda Yağı FPS Perma Lock 500 ML", img:"/images/products/foodgreasefps.png" },
+      { tag:"Gıda Onaylı Yağlayıcı", name:"CRC Extreme Lube FPS Perma-Lock 500 ML", img:"/images/products/extremelubefps.png" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC ECO Köpük Temizleyici FPS 500 ML", img:"/images/products/ecofoamcleaner.png" },
+      { tag:"Gıda Onaylı Yağlayıcı", name:"CRC Kuru Yağlayıcı - F FPS Perma-Lock 500 ML", img:"/images/products/drylubef.png" },
+      { tag:"Gıda Onaylı Yağlayıcı", name:"CRC Doğrudan Temaslı Gıda Yağlayıcısı FPS 500 ML", img:"/images/products/DirectContactFoodLubeFPS.jpg" },
+      { tag:"Gıda Onaylı Özel Ürünler", name:"CRC Şeker Çözücü Sıvı FPS 5 L", img:"/images/products/SugarDissolvingFluid-5L.jpg" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC CONTACT CLEAN & PROTECT FPS 500 ML", img:"/images/products/ContactClean_ProtectFPS.jpg" },
+      { tag:"Gıda Onaylı Yağlayıcı", name:"CRC Zincir Yağı FPS Perma-Lock 500 ML", img:"/images/products/chainlubefps.png" },
+    ]
+  },
+  "Madencilik": {
+    icon: "⛏️",
+    desc: "Ağır maden makineleri için dayanıklı yüksek performanslı gresler.",
+    products: [
+      { tag:"Gres", name:"Rhenus LKX 2 4,5 KG", img:"/images/products/rhenuslkx2.png" },
+    ]
+  },
+  "Raylı Ulaşım": {
+    icon: "🚆",
+    desc: "Tren, metro ve tramvay sistemleri için özel Rhenus gres ve yağlayıcılar.",
+    products: [
+      { tag:"Gres", name:"Rhenus LKR 2 4,5 KG", img:"/images/products/rhenuslkr2.png" },
+      { tag:"Gres", name:"Rhenus LZN 2 4,5 KG", img:"/images/products/rhenuslzn2.png" },
+      { tag:"Gres", name:"Rhenus CBG 03 4,5 KG", img:"/images/products/rhenuscbg03.png" },
+      { tag:"Gres", name:"Rhenus LDU 02 GR 4,5 KG", img:"/images/products/rhenusldu02gr.png" },
+      { tag:"Gres", name:"Rhenus BDG 02 4,5 KG", img:"/images/products/rhenusbdg02.png" },
+    ]
+  },
+  "Üretim": {
+    icon: "🏭",
+    desc: "Genel üretim tesisleri için kapsamlı bakım kimyasalları, yağlayıcılar ve korozyon önleyiciler.",
+    products: [
+      { tag:"Yağlayıcı", name:"CRC Supercut 250 ML", img:"/images/products/Supercut250.png" },
+      { tag:"Korozyon Koruyucu", name:"CRC SP 400", img:"/images/products/sp400-250.png" },
+      { tag:"Korozyon Koruyucu", name:"CRC SP 350", img:"/images/products/sp350_500ML.png" },
+      { tag:"Boya", name:"CRC İşaretleme Kalemi", img:"/images/products/MarkerPen.jpg" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Endüstriyel Eko Yağ Sökücü FPS", img:"/images/products/IndustrialEcoDegreaser.jpg" },
+      { tag:"Pas Sökücü", name:"CRC Evapo-Rust", img:"/images/products/Evapo-Rust_1L.png" },
+      { tag:"Çok Amaçlı", name:"CRC 5-56 PRO", img:"/images/products/5-56PRO500ML.png" },
+      { tag:"Çok Amaçlı", name:"CRC 3-36 FPS", img:"/images/products/3-36_250ml.jpg" },
+      { tag:"Temizleyici", name:"Proloc P275 Etiket ve Çıkartma Sökücü 200 ML", img:"/images/products/P275.jpg" },
+      { tag:"Yağlayıcı", name:"Proloc P273 Silikon Kayganlaştırıcı 400 ML", img:"/images/products/Proloc_P_273.jpg" },
+      { tag:"Pas Sökücü", name:"Proloc P240G Silah Bakım Korozyon Önleyici 400 ML", img:"/images/products/Proloc_P_240G.jpg" },
+      { tag:"Yağlayıcı", name:"Proloc P216 Sıvı Gres Spreyi 500 ML", img:"/images/products/Proloc_P_216.jpg" },
+      { tag:"Temizleyici", name:"Proloc Fren ve Temizleyici 500 ML", img:"/images/products/P275.jpg" },
+      { tag:"Korozyon Koruyucu", name:"CRC Çinko Astarı 500 ML", img:"/images/products/zincprimer500ml.png" },
+      { tag:"Yağlayıcı", name:"CRC Beyaz Lityum Gres Yağı 500 ML", img:"/images/products/WhiteLithiumGrease500ml.png" },
+      { tag:"Yağlayıcı", name:"CRC Süper Kılavuz Çekme Sıvısı 250 ML", img:"/images/products/supertappingfluid.png" },
+      { tag:"Yağlayıcı", name:"CRC Silikon Gres Yağı 400 ML", img:"/images/products/siliconegrease400ML.png" },
+      { tag:"Yağlayıcı", name:"CRC Multilube Pro 500 ML", img:"/images/products/MultiLubePRO500ML.png" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Inox Kleen FPS 500 ML", img:"/images/products/Inoxkleenfps500.png" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Endüstriyel Yağ Sökücü FPS 500 ML", img:"/images/products/IndustrialDegreaserFPS500ML.jpg" },
+      { tag:"Yağlayıcı", name:"CRC Yüksek Sıcaklık Gres Yağı 100 ML", img:"/images/products/hightempgrease100ML.png" },
+      { tag:"Yağlayıcı", name:"CRC Yüksek Hızlı Gres Yağı 500 ML", img:"/images/products/HighSpeedGrease.png" },
+      { tag:"Yağlayıcı", name:"CRC Yüksek Hızlı Zincir Yağı 500 ML", img:"/images/products/highspeedchain_500_ML.png" },
+      { tag:"Gıda Onaylı Yağlayıcı", name:"CRC Extreme Lube FPS Perma-Lock 500 ML", img:"/images/products/extremelubefps.png" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC CONTACT CLEAN & PROTECT FPS 500 ML", img:"/images/products/ContactClean_ProtectFPS.jpg" },
+      { tag:"Yağlayıcı", name:"CRC Zincir Yağı IND 500 ML", img:"/images/products/ChainLubeIND.png" },
+      { tag:"Gıda Onaylı Yağlayıcı", name:"CRC Zincir Yağı FPS Perma-Lock 500 ML", img:"/images/products/chainlubefps.png" },
+      { tag:"Yağlayıcı", name:"CRC Seramik Macunu 12x250 ML", img:"/images/products/CeramicPaste.png" },
+      { tag:"Temizleyici", name:"CRC BRAKLEEN VOC İçermeyen 400 ML", img:"/images/products/BRAKLEENVOCFREE.png" },
+      { tag:"Temizleyici", name:"CRC BRAKLEEN H2O 400 ML", img:"/images/products/BrakleenH2O.png" },
+      { tag:"Temizleyici", name:"CRC BRAKLEEN 20 500 ML", img:"/images/products/Brakleen20.png" },
+      { tag:"Korozyon Koruyucu", name:"CRC Alu HiTemp 500 ML", img:"/images/products/aluhightemp.png" },
+      { tag:"Yağlayıcı", name:"CRC 5-56 250 ML", img:"/images/products/5-56-250ML.png" },
+    ]
+  },
+  "Polimer": {
+    icon: "🧪",
+    desc: "Plastik ve kauçuk işleme makineleri için kalıp ayırıcılar, temizleyiciler ve yağlayıcılar.",
+    products: [
+      { tag:"Kalıp Ayırıcı", name:"CRC SR Termo", img:"/images/products/srthermo.png" },
+      { tag:"Korozyon Koruyucu", name:"CRC SP 400", img:"/images/products/sp400-250.png" },
+      { tag:"Korozyon Koruyucu", name:"CRC SP 350", img:"/images/products/sp350_500ML.png" },
+      { tag:"Korozyon Koruyucu", name:"CRC Pas Sökücü", img:"/images/products/rustremover250ml.png" },
+      { tag:"Kalıp Ayırıcı", name:"CRC NSR Hassas", img:"/images/products/nsrsensitive.png" },
+      { tag:"Boya", name:"CRC İşaretleme Kalemi", img:"/images/products/MarkerPen.jpg" },
+      { tag:"Temizleyici", name:"CRC Lectra Clean II", img:"/images/products/LectraCleanII500ml.png" },
+      { tag:"Temizleyici", name:"CRC Hızlı Kuruyan Yağ Çözücü", img:"/images/products/fastdrydegreaser500.png" },
+      { tag:"Gıda Onaylı Temizleyici", name:"CRC Eco Complex Blue FPS", img:"/images/products/EcoComplexBlue-1L.jpg" },
+      { tag:"Çok Amaçlı", name:"CRC 5-56 PRO", img:"/images/products/5-56PRO500ML.png" },
+      { tag:"Çok Amaçlı", name:"CRC 3-36 FPS", img:"/images/products/3-36_250ml.jpg" },
+      { tag:"Yağlayıcı", name:"Proloc P273 Silikon Kayganlaştırıcı 400 ML", img:"/images/products/Proloc_P_273.jpg" },
+      { tag:"Temizleyici", name:"Proloc Fren ve Temizleyici 500 ML", img:"/images/products/P275.jpg" },
+      { tag:"Yağlayıcı", name:"CRC Triflow 400 ML", img:"/images/products/triflow400ML.png" },
+      { tag:"Yağlayıcı", name:"CRC Süper Kılavuz Çekme Sıvısı 250 ML", img:"/images/products/supertappingfluid.png" },
+      { tag:"Kalıp Ayırıcı", name:"CRC SR Semi 500 ML", img:"/images/products/srsemiper.png" },
+      { tag:"Kalıp Ayırıcı", name:"CRC SR Multi 500 ML", img:"/images/products/srmulti.png" },
+      { tag:"Gıda Onaylı Kalıp Ayırıcı", name:"CRC SR Gıda FPS 500 ML", img:"/images/products/srfoodfps500ml.png" },
+      { tag:"Yağlayıcı", name:"CRC Silikon Gres Yağı 400 ML", img:"/images/products/siliconegrease400ML.png" },
+      { tag:"Gıda Onaylı Yağlayıcı", name:"CRC Silikon FPS Perma-Lock 500 ML", img:"/images/products/siliconefpspermalock500ml.png" },
+      { tag:"Temizleyici", name:"CRC Polimer Sökücü 400 ML", img:"/images/products/polymerremover400.png" },
+      { tag:"Kalıp Ayırıcı", name:"CRC NSR Islak 500 ML", img:"/images/products/nsrwet.png" },
+      { tag:"Kalıp Ayırıcı", name:"CRC NSR Ultra İnce 500 ML", img:"/images/products/nsrultrathin.png" },
+      { tag:"Kalıp Ayırıcı", name:"CRC NSR Thermo 500 ML", img:"/images/products/nsrthermo.png" },
+      { tag:"Kalıp Ayırıcı", name:"CRC NSR Multi 500 ML", img:"/images/products/nsrmulti.png" },
+      { tag:"Gıda Onaylı Kalıp Ayırıcı", name:"CRC NSR Gıda FPS 500 ML", img:"/images/products/nsrfoodfps.jpg" },
+      { tag:"Kalıp Ayırıcı", name:"CRC NSR Kuru 500 ML", img:"/images/products/nsrdry.png" },
+      { tag:"Yağlayıcı", name:"CRC Multilube Pro 500 ML", img:"/images/products/MultiLubePRO500ML.png" },
+      { tag:"Korozyon Koruyucu", name:"CRC Küf Koruyucu 500 ML", img:"/images/products/mouldprotect.png" },
+      { tag:"Temizleyici", name:"CRC Küf Temizleyici 500 ML", img:"/images/products/MouldClean.png" },
+      { tag:"Yağlayıcı", name:"CRC Yüksek Sıcaklık Gres Yağı 100 ML", img:"/images/products/hightempgrease100ML.png" },
+      { tag:"Pas Sökücü", name:"CRC Ferrokleen 5 KG", img:"/images/products/ferrokleen.png" },
+      { tag:"Gıda Onaylı Yağlayıcı", name:"CRC Ejektör Yağı FPS 500 ML", img:"/images/products/ejectorlubefps500ML.png" },
+      { tag:"Gıda Onaylı Korozyon Koruyucu", name:"CRC Şeffaf Küf Koruyucu FPS 500 ML", img:"/images/products/clearmouldprotectfps.png" },
+      { tag:"Temizleyici", name:"CRC BRAKLEEN VOC İçermeyen 400 ML", img:"/images/products/BRAKLEENVOCFREE.png" },
+      { tag:"Temizleyici", name:"CRC BRAKLEEN H2O 400 ML", img:"/images/products/BrakleenH2O.png" },
+      { tag:"Temizleyici", name:"CRC BRAKLEEN 20 500 ML", img:"/images/products/Brakleen20.png" },
+      { tag:"Gıda Onaylı Korozyon Koruyucu", name:"CRC Mavi Küf Koruyucu FPS 500 ML", img:"/images/products/bluemouldprotectfps.png" },
+      { tag:"Yağlayıcı", name:"CRC 5-56 250 ML", img:"/images/products/5-56-250ML.png" },
+    ]
+  },
+};
+
+const catList = document.getElementById("catList");
+const productPanel = document.getElementById("productPanel");
+
+Object.keys(data).forEach(cat => {
+  const d = data[cat];
+  const item = document.createElement("div");
+  item.className = "cat-item";
+  item.innerHTML = `
+    <div class="cat-icon">${d.icon}</div>
+    <span class="cat-name">${cat}</span>
+    <span class="cat-count">${d.products.length || "—"}</span>
+  `;
+  item.addEventListener("click", () => {
+    document.querySelectorAll(".cat-item").forEach(i => i.classList.remove("active"));
+    item.classList.add("active");
+    renderProducts(cat);
+  });
+  catList.appendChild(item);
+});
+
+function renderProducts(cat) {
+  const d = data[cat];
+  const tags = ["Tümü", ...new Set(d.products.map(p => p.tag))];
+
+  function renderGrid(filter) {
+    const filtered = filter === "Tümü" ? d.products : d.products.filter(p => p.tag === filter);
+    return filtered.map(p => `
+      <div class="product-card">
+        ${p.img
+          ? `<img class="product-img" src="${p.img}" alt="${p.name}" loading="lazy" />`
+          : `<div class="product-img" style="display:flex;align-items:center;justify-content:center;font-size:2.5rem;">${d.icon}</div>`
+        }
+        <div class="product-body">
+          <span class="product-tag">${p.tag}</span>
+          <div class="product-name">${p.name}</div>
+          <a href="#iletisim" class="product-btn">Teklif Al <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  productPanel.innerHTML = `
+    <div class="panel-header">
+      <div class="panel-icon">${d.icon}</div>
+      <div>
+        <div class="panel-title">${cat}</div>
+        <div class="panel-desc">${d.desc}</div>
+        <div class="panel-meta">${d.products.length} ürün</div>
+      </div>
+    </div>
+    <div class="filter-tabs" id="filterTabs">
+      ${tags.map(t => `<button class="filter-tab ${t==="Tümü"?"active":""}" data-tag="${t}">${t}</button>`).join("")}
+    </div>
+    <div class="products-grid" id="productsGrid">
+      ${renderGrid("Tümü")}
+    </div>
+  `;
+
+  document.querySelectorAll(".filter-tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".filter-tab").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById("productsGrid").innerHTML = renderGrid(btn.dataset.tag);
+    });
+  });
+
+  productPanel.style.animation = "none";
+  productPanel.offsetHeight;
+  productPanel.style.animation = "fadeSlide .3s ease";
+}
+</script>
