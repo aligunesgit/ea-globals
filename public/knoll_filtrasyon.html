@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knoll Filtration Systems</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0c0e;
+  --surface: #111418;
+  --surface2: #181c22;
+  --border: #1e2530;
+  --accent: #00d4ff;
+  --accent2: #ff6b35;
+  --text: #e8eaf0;
+  --muted: #5a6478;
+  --clean: #00d4ff;
+  --dirty: #b8860b;
+  --sludge: #5c4a2a;
+  --fleece: #c8d0d8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* HEADER */
+header {
+  padding: 40px 60px 30px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px;
+  letter-spacing: 4px;
+  line-height: 1;
+  color: var(--text);
+}
+
+.brand span {
+  color: var(--accent);
+}
+
+.header-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+/* NAV TABS */
+.nav-tabs {
+  display: flex;
+  gap: 0;
+  padding: 0 60px;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  padding: 14px 24px;
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: all 0.25s;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
+.tab:hover { color: var(--text); }
+.tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* MAIN */
+main { padding: 40px 60px; }
+
+.filter-panel { display: none; }
+.filter-panel.active { display: block; }
+
+.panel-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 48px;
+}
+
+.panel-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  letter-spacing: 2px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.panel-code {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.panel-desc {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+  max-width: 420px;
+}
+
+.process-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.process-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 24px;
+}
+
+.block-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.block-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.step {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 14px;
+  align-items: flex-start;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: all 0.4s;
+}
+
+.step.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.step-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  min-width: 20px;
+  margin-top: 2px;
+}
+
+.step-text { font-size: 13px; color: var(--text); line-height: 1.6; }
+
+/* ANIMATION CANVAS */
+.anim-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 32px;
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.anim-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  border-radius: 2px;
+}
+
+.ctrl-bar {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  align-items: center;
+}
+
+.btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  border-radius: 1px;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+.status-row {
+  display: flex;
+  gap: 24px;
+  margin-left: auto;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+.dot.clean { background: var(--clean); }
+.dot.dirty { background: var(--dirty); }
+.dot.regen { background: var(--accent2); }
+
+/* LEVEL INDICATOR */
+.level-indicator {
+  position: absolute;
+  right: 32px;
+  top: 60px;
+  width: 24px;
+  height: 120px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.level-fill {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(to top, var(--dirty), rgba(184,134,11,0.3));
+  transition: height 0.5s ease;
+}
+
+.level-label {
+  position: absolute;
+  right: 36px;
+  top: 60px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  user-select: none;
+}
+
+/* FOOTER */
+footer {
+  margin-top: 60px;
+  padding: 24px 60px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 3px;
+  color: var(--muted);
+}
+
+.footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+  header, main, footer, .nav-tabs { padding-left: 20px; padding-right: 20px; }
+  .panel-header, .process-columns { grid-template-columns: 1fr; gap: 20px; }
+  .brand { font-size: 36px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="brand">KNOLL <span>FILTRATION</span></div>
+  </div>
+  <div class="header-sub">
+    Industrial Filtration Systems<br>
+    Interactive Process Visualizer
+  </div>
+</header>
+
+<div class="nav-tabs">
+  <button class="tab active" onclick="showPanel('kf')">KF Compact</button>
+  <button class="tab" onclick="showPanel('kfe')">KF-E Compact</button>
+  <button class="tab" onclick="showPanel('micro')">MicroPur®</button>
+  <button class="tab" onclick="showPanel('vlo')">Vacuum VLO</button>
+  <button class="tab" onclick="showPanel('gravity')">Gravity Belt</button>
+  <button class="tab" onclick="showPanel('vrf')">Vacuum VRF</button>
+</div>
+
+<main>
+
+<!-- ===== KF COMPACT ===== -->
+<div class="filter-panel active" id="panel-kf">
+  <div class="panel-header">
+    <div>
+      <div class="panel-code">MODEL · KF-001</div>
+      <div class="panel-title">Compact Filter KF</div>
+      <div class="panel-desc">Belt-fleece filtration system using gravity flow and continuous belt regeneration. Optimized for metalworking coolant (KSS) cleaning with high and low pressure supply pumps.</div>
+    </div>
+    <div class="process-columns">
+      <div class="process-block">
+        <div class="block-label">Filtration</div>
+        <div class="step"><span class="step-num">01</span><span class="step-text">Dirty liquid flows laterally through intake box into filter trough</span></div>
+        <div class="step"><span class="step-num">02</span><span class="step-text">Filter fleece retains dirt particles during flow-through</span></div>
+        <div class="step"><span class="step-num">03</span><span class="step-text">Dirt particles form a filter cake — separates finest particles</span></div>
+        <div class="step"><span class="step-num">04</span><span class="step-text">Clean liquid collects in clean tank</span></div>
+        <div class="step"><span class="step-num">05</span><span class="step-text">Pumps supply machine tool with cleaned KSS as required</span></div>
+      </div>
+      <div class="process-block">
+        <div class="block-label">Regeneration</div>
+        <div class="step"><span class="step-num">01</span><span class="step-text">Growing filter cake increases flow resistance</span></div>
+        <div class="step"><span class="step-num">02</span><span class="step-text">Liquid level in filter trough rises</span></div>
+        <div class="step"><span class="step-num">03</span><span class="step-text">Belt drive activates at defined level (or time-controlled)</span></div>
+        <div class="step"><span class="step-num">04</span><span class="step-text">Carrier belt transports clean fleece onto filter surface</span></div>
+        <div class="step"><span class="step-num">05</span><span class="step-text">Liquid level decreases — sludge container collects dirty fleece</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="anim-section">
+    <div class="anim-title">Live process simulation — KF Compact Filter</div>
+    <canvas id="canvas-kf" height="280"></canvas>
+    <div class="level-label">Level</div>
+    <div class="level-indicator"><div class="level-fill" id="kf-level" style="height:30%"></div></div>
+    <div class="ctrl-bar">
+      <button class="btn active" id="btn-kf" onclick="toggleSim('kf')">⏸ Pause</button>
+      <button class="btn" onclick="triggerRegen('kf')">↻ Trigger Regen</button>
+      <div class="status-row">
+        <div class="status-item"><div class="dot dirty"></div>Dirty fluid</div>
+        <div class="status-item"><div class="dot clean"></div>Clean fluid</div>
+        <div class="status-item"><div class="dot regen"></div>Regeneration</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== KF-E ===== -->
+<div class="filter-panel" id="panel-kfe">
+  <div class="panel-header">
+    <div>
+      <div class="panel-code">MODEL · KF-E-002</div>
+      <div class="panel-title">Compact Filter KF-E</div>
+      <div class="panel-desc">Enhanced belt filter with integrated brush and back-flushing device for continuous belt cleaning. The belt is regenerated and reused rather than discarded.</div>
+    </div>
+    <div class="process-columns">
+      <div class="process-block">
+        <div class="block-label">Filtration</div>
+        <div class="step"><span class="step-num">01</span><span class="step-text">Contaminated liquid flows from side through inlet box into filter trough</span></div>
+        <div class="step"><span class="step-num">02</span><span class="step-text">Filter fleece holds back contaminant particles during streaming</span></div>
+        <div class="step"><span class="step-num">03</span><span class="step-text">Contaminant particles form a filter cake for fine separation</span></div>
+        <div class="step"><span class="step-num">04</span><span class="step-text">Filtered fluid collects in clean tank</span></div>
+      </div>
+      <div class="process-block">
+        <div class="block-label">Regeneration</div>
+        <div class="step"><span class="step-num">01</span><span class="step-text">Growing filter cake increases flow resistance</span></div>
+        <div class="step"><span class="step-num">02</span><span class="step-text">Fluid level in filter trough increases</span></div>
+        <div class="step"><span class="step-num">03</span><span class="step-text">Belt drive activates at defined level</span></div>
+        <div class="step"><span class="step-num">04</span><span class="step-text">Carrier belt transports clean filter belt to filter surface</span></div>
+        <div class="step"><span class="step-num">05</span><span class="step-text">Brush and back-flushing device clean the filter belt for reuse</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="anim-section">
+    <div class="anim-title">Live process simulation — KF-E Compact Filter with brush regeneration</div>
+    <canvas id="canvas-kfe" height="280"></canvas>
+    <div class="level-indicator"><div class="level-fill" id="kfe-level" style="height:30%"></div></div>
+    <div class="ctrl-bar">
+      <button class="btn active" id="btn-kfe" onclick="toggleSim('kfe')">⏸ Pause</button>
+      <button class="btn" onclick="triggerRegen('kfe')">↻ Trigger Regen</button>
+      <div class="status-row">
+        <div class="status-item"><div class="dot dirty"></div>Dirty fluid</div>
+        <div class="status-item"><div class="dot clean"></div>Clean fluid</div>
+        <div class="status-item"><div class="dot regen"></div>Belt brushing</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MICROPUR ===== -->
+<div class="filter-panel" id="panel-micro">
+  <div class="panel-header">
+    <div>
+      <div class="panel-code">MODEL · MP-003</div>
+      <div class="panel-title">Superfine Filter MicroPur®</div>
+      <div class="panel-desc">Centrifugal superfine filtration with tangential inlet and cartridge filter elements. Automated pressure-differential regeneration with sludge tank and optional concentrator.</div>
+    </div>
+    <div class="process-columns">
+      <div class="process-block">
+        <div class="block-label">Filtration</div>
+        <div class="step"><span class="step-num">01</span><span class="step-text">Filter pump conveys dirty coolant tangentially into filter bowl</span></div>
+        <div class="step"><span class="step-num">02</span><span class="step-text">Centrifugal force accumulates larger solids on housing wall</span></div>
+        <div class="step"><span class="step-num">03</span><span class="step-text">Coolant flows through filter elements outside → inside</span></div>
+        <div class="step"><span class="step-num">04</span><span class="step-text">Filter cake forms on element surface — acts as deep-bed filter</span></div>
+        <div class="step"><span class="step-num">05</span><span class="step-text">Clean filtrate enters clean tank</span></div>
+      </div>
+      <div class="process-block">
+        <div class="block-label">Regeneration</div>
+        <div class="step"><span class="step-num">01</span><span class="step-text">Filter cake reduces flow or increases differential pressure</span></div>
+        <div class="step"><span class="step-num">02</span><span class="step-text">Pressure/time control starts regeneration — intake closes, drain opens</span></div>
+        <div class="step"><span class="step-num">03</span><span class="step-text">Flushing pump reverses flow inside → outside through element</span></div>
+        <div class="step"><span class="step-num">04</span><span class="step-text">Filter cake released into sludge tank</span></div>
+        <div class="step"><span class="step-num">05</span><span class="step-text">Automatic concentrator reduces sludge volume</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="anim-section">
+    <div class="anim-title">Live process simulation — MicroPur® centrifugal filter</div>
+    <canvas id="canvas-micro" height="280"></canvas>
+    <div class="ctrl-bar">
+      <button class="btn active" id="btn-micro" onclick="toggleSim('micro')">⏸ Pause</button>
+      <button class="btn" onclick="triggerRegen('micro')">↻ Trigger Regen</button>
+      <div class="status-row">
+        <div class="status-item"><div class="dot dirty"></div>Dirty coolant</div>
+        <div class="status-item"><div class="dot clean"></div>Clean filtrate</div>
+        <div class="status-item"><div class="dot regen"></div>Back-flush</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== VLO ===== -->
+<div class="filter-panel" id="panel-vlo">
+  <div class="panel-header">
+    <div>
+      <div class="panel-code">MODEL · VLO-004</div>
+      <div class="panel-title">Vacuum Filter VLO</div>
+      <div class="panel-desc">Vacuum-assisted continuous roll filtration for fine particle separation. Vacuum pressure controls automatic belt advancement in the filter chamber.</div>
+    </div>
+    <div class="process-columns">
+      <div class="process-block">
+        <div class="block-label">Filtration</div>
+        <div class="step"><span class="step-num">01</span><span class="step-text">Lift pump conveys waste fluid into intake box</span></div>
+        <div class="step"><span class="step-num">02</span><span class="step-text">Cleaned KSS flows through continuous roll into filter chamber</span></div>
+        <div class="step"><span class="step-num">03</span><span class="step-text">Filter cake forms on continuous roll — acts as depth filter for finest particles</span></div>
+      </div>
+      <div class="process-block">
+        <div class="block-label">Regeneration</div>
+        <div class="step"><span class="step-num">01</span><span class="step-text">Growing filter cake increases flow resistance</span></div>
+        <div class="step"><span class="step-num">02</span><span class="step-text">Vacuum in filter chamber increases</span></div>
+        <div class="step"><span class="step-num">03</span><span class="step-text">Belt drive activates at defined vacuum threshold</span></div>
+        <div class="step"><span class="step-num">04</span><span class="step-text">Clean roll advances — volume flow increases again</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="anim-section">
+    <div class="anim-title">Live process simulation — Vacuum Filter VLO</div>
+    <canvas id="canvas-vlo" height="280"></canvas>
+    <div class="ctrl-bar">
+      <button class="btn active" id="btn-vlo" onclick="toggleSim('vlo')">⏸ Pause</button>
+      <button class="btn" onclick="triggerRegen('vlo')">↻ Trigger Regen</button>
+      <div class="status-row">
+        <div class="status-item"><div class="dot dirty"></div>Dirty fluid</div>
+        <div class="status-item"><div class="dot clean"></div>Clean fluid</div>
+        <div class="status-item"><div class="dot regen" style="background:#a855f7"></div>Vacuum active</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GRAVITY BELT ===== -->
+<div class="filter-panel" id="panel-gravity">
+  <div class="panel-header">
+    <div>
+      <div class="panel-code">MODEL · GBF-005</div>
+      <div class="panel-title">Gravity Belt Filter</div>
+      <div class="panel-desc">Gravity-driven belt filter with level-controlled regeneration. Simple and robust design for industrial coolant filtration with sludge container takeup.</div>
+    </div>
+    <div class="process-columns">
+      <div class="process-block">
+        <div class="block-label">Filtration</div>
+        <div class="step"><span class="step-num">01</span><span class="step-text">Contaminated liquid flows through inlet box into filter trough</span></div>
+        <div class="step"><span class="step-num">02</span><span class="step-text">Filter fleece holds back contaminant particles during streaming</span></div>
+        <div class="step"><span class="step-num">03</span><span class="step-text">Filter cake separates finest dirt particles</span></div>
+        <div class="step"><span class="step-num">04</span><span class="step-text">Filtered fluid collects in filtered fluid tank</span></div>
+      </div>
+      <div class="process-block">
+        <div class="block-label">Regeneration</div>
+        <div class="step"><span class="step-num">01</span><span class="step-text">Growing filter cake increases flow resistance</span></div>
+        <div class="step"><span class="step-num">02</span><span class="step-text">Fluid level in filter trough rises</span></div>
+        <div class="step"><span class="step-num">03</span><span class="step-text">Belt drive activates at defined level (or time-controlled)</span></div>
+        <div class="step"><span class="step-num">04</span><span class="step-text">Carrier belt transports clean fleece to filter surface</span></div>
+        <div class="step"><span class="step-num">05</span><span class="step-text">Fluid level sinks — sludge container collects dirty fleece</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="anim-section">
+    <div class="anim-title">Live process simulation — Gravity Belt Filter</div>
+    <canvas id="canvas-gravity" height="280"></canvas>
+    <div class="level-indicator"><div class="level-fill" id="gravity-level" style="height:30%"></div></div>
+    <div class="ctrl-bar">
+      <button class="btn active" id="btn-gravity" onclick="toggleSim('gravity')">⏸ Pause</button>
+      <button class="btn" onclick="triggerRegen('gravity')">↻ Trigger Regen</button>
+      <div class="status-row">
+        <div class="status-item"><div class="dot dirty"></div>Dirty fluid</div>
+        <div class="status-item"><div class="dot clean"></div>Clean fluid</div>
+        <div class="status-item"><div class="dot regen"></div>Regeneration</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== VRF ===== -->
+<div class="filter-panel" id="panel-vrf">
+  <div class="panel-header">
+    <div>
+      <div class="panel-code">MODEL · VRF-006</div>
+      <div class="panel-title">Vacuum Rotation Filter VRF</div>
+      <div class="panel-desc">Rotating drum vacuum filter with automatic back-wash regeneration and scraper belt for sludge removal. Self-contained system with high/low pressure pump supply.</div>
+    </div>
+    <div class="process-columns">
+      <div class="process-block">
+        <div class="block-label">Filtration</div>
+        <div class="step"><span class="step-num">01</span><span class="step-text">Contaminated liquid flows through intake box into filter</span></div>
+        <div class="step"><span class="step-num">02</span><span class="step-text">Filter pump draws contaminated liquid into interior of filter drum</span></div>
+        <div class="step"><span class="step-num">03</span><span class="step-text">Filter element on drum retains dirt particles during flow</span></div>
+        <div class="step"><span class="step-num">04</span><span class="step-text">Dirt particles form filter cake for finer separation</span></div>
+        <div class="step"><span class="step-num">05</span><span class="step-text">Filter pump conveys cleaned liquid into tank</span></div>
+        <div class="step"><span class="step-num">06</span><span class="step-text">Pumps supply machine tool with cleaned cooling lubricant</span></div>
+      </div>
+      <div class="process-block">
+        <div class="block-label">Regeneration</div>
+        <div class="step"><span class="step-num">01</span><span class="step-text">Growing filter cake increases flow resistance — underpressure rises</span></div>
+        <div class="step"><span class="step-num">02</span><span class="step-text">At defined underpressure, drum rotates and backwash pump loosens cake</span></div>
+        <div class="step"><span class="step-num">03</span><span class="step-text">Scraper belt transports settled sludge out of filter into sludge tank</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="anim-section">
+    <div class="anim-title">Live process simulation — Vacuum Rotation Filter VRF</div>
+    <canvas id="canvas-vrf" height="280"></canvas>
+    <div class="ctrl-bar">
+      <button class="btn active" id="btn-vrf" onclick="toggleSim('vrf')">⏸ Pause</button>
+      <button class="btn" onclick="triggerRegen('vrf')">↻ Trigger Regen</button>
+      <div class="status-row">
+        <div class="status-item"><div class="dot dirty"></div>Dirty coolant</div>
+        <div class="status-item"><div class="dot clean"></div>Clean coolant</div>
+        <div class="status-item"><div class="dot regen"></div>Drum rotation</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="footer-brand">KNOLL · MB</div>
+  <div class="footer-copy">FILTRATION PROCESS VISUALIZER · INTERACTIVE REFERENCE</div>
+</footer>
+
+<script>
+// ============================================================
+// SIMULATION STATE
+// ============================================================
+const sims = {};
+const running = { kf: true, kfe: true, micro: true, vlo: true, gravity: true, vrf: true };
+const regenState = { kf: false, kfe: false, micro: false, vlo: false, gravity: false, vrf: false };
+const regenTimer = {};
+
+function showPanel(id) {
+  document.querySelectorAll('.filter-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  event.target.classList.add('active');
+  animateSteps(id);
+  if (sims[id]) return;
+  initSim(id);
+}
+
+function animateSteps(id) {
+  const panel = document.getElementById('panel-' + id);
+  const steps = panel.querySelectorAll('.step');
+  steps.forEach((s, i) => {
+    s.classList.remove('visible');
+    setTimeout(() => s.classList.add('visible'), 100 + i * 80);
+  });
+}
+
+function toggleSim(id) {
+  running[id] = !running[id];
+  const btn = document.getElementById('btn-' + id);
+  if (running[id]) {
+    btn.textContent = '⏸ Pause';
+    btn.classList.add('active');
+    if (sims[id]) sims[id].run = true;
+  } else {
+    btn.textContent = '▶ Resume';
+    btn.classList.remove('active');
+    if (sims[id]) sims[id].run = false;
+  }
+}
+
+function triggerRegen(id) {
+  regenState[id] = true;
+  clearTimeout(regenTimer[id]);
+  regenTimer[id] = setTimeout(() => { regenState[id] = false; }, 3000);
+}
+
+// ============================================================
+// PARTICLE SYSTEM
+// ============================================================
+class Particle {
+  constructor(x, y, vx, vy, color, r) {
+    this.x = x; this.y = y;
+    this.vx = vx; this.vy = vy;
+    this.color = color;
+    this.r = r || 2.5;
+    this.life = 1;
+    this.decay = 0.004 + Math.random() * 0.004;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.life -= this.decay;
+  }
+  draw(ctx) {
+    ctx.save();
+    ctx.globalAlpha = this.life * 0.85;
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+// ============================================================
+// INIT SIMULATION
+// ============================================================
+function initSim(id) {
+  const canvas = document.getElementById('canvas-' + id);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth;
+  canvas.height = 280;
+  const W = canvas.width, H = canvas.height;
+
+  const state = {
+    run: true,
+    particles: [],
+    time: 0,
+    cakeLevel: 0,   // 0..1
+    liquidLevel: 0.3, // 0..1
+    phase: 'filter',  // 'filter' | 'regen'
+    drumAngle: 0,
+    beltOffset: 0,
+    pressureDiff: 0,
+  };
+  sims[id] = state;
+
+  function loop() {
+    if (!state.run) { requestAnimationFrame(loop); return; }
+    state.time++;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#111418';
+    ctx.fillRect(0, 0, W, H);
+
+    const regen = regenState[id];
+
+    if (regen && state.phase === 'filter') {
+      state.phase = 'regen';
+      state.cakeLevel = 0;
+    }
+    if (!regen && state.phase === 'regen' && state.time % 180 === 0) {
+      state.phase = 'filter';
+    }
+
+    switch(id) {
+      case 'kf':    drawKF(ctx, W, H, state, regen); break;
+      case 'kfe':   drawKFE(ctx, W, H, state, regen); break;
+      case 'micro': drawMicro(ctx, W, H, state, regen); break;
+      case 'vlo':   drawVLO(ctx, W, H, state, regen); break;
+      case 'gravity': drawGravity(ctx, W, H, state, regen); break;
+      case 'vrf':   drawVRF(ctx, W, H, state, regen); break;
+    }
+
+    state.particles.forEach(p => { p.update(); p.draw(ctx); });
+    state.particles = state.particles.filter(p => p.life > 0);
+
+    requestAnimationFrame(loop);
+  }
+  loop();
+  animateSteps(id);
+}
+
+// ============================================================
+// DRAWING HELPERS
+// ============================================================
+const C = {
+  dirty: '#b8860b', dirtyL: '#d4a017', clean: '#00d4ff', cleanL: '#7fffff',
+  sludge: '#5c4a2a', fleece: '#8899aa', steel: '#2a3040', steelL: '#3a4560',
+  accent: '#ff6b35', border: '#1e2530', text: '#5a6478'
+};
+
+function drawLabel(ctx, x, y, text, color) {
+  ctx.fillStyle = color || C.text;
+  ctx.font = '9px DM Mono, monospace';
+  ctx.fillText(text.toUpperCase(), x, y);
+}
+
+function drawPipe(ctx, x1, y1, x2, y2, w, color, flow, t) {
+  ctx.strokeStyle = color;
+  ctx.lineWidth = w;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
+
+  if (flow) {
+    // animated dashes
+    ctx.save();
+    ctx.strokeStyle = flow;
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 6]);
+    ctx.lineDashOffset = -(t * 1.5) % 10;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+}
+
+function roundRect(ctx, x, y, w, h, r, fill, stroke, sw) {
+  ctx.beginPath();
+  ctx.roundRect(x, y, w, h, r || 0);
+  if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+  if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = sw || 1; ctx.stroke(); }
+}
+
+// ============================================================
+// KF — Belt Compact Filter
+// ============================================================
+function drawKF(ctx, W, H, state, regen) {
+  const t = state.time;
+  const lev = state.liquidLevel;
+
+  // Auto cake growth
+  if (!regen && state.cakeLevel < 0.85) state.cakeLevel += 0.0008;
+  if (regen) {
+    state.cakeLevel = Math.max(0, state.cakeLevel - 0.01);
+    state.liquidLevel = Math.max(0.25, state.liquidLevel - 0.005);
+  } else {
+    state.liquidLevel = Math.min(0.2 + state.cakeLevel * 0.6, 0.85);
+  }
+
+  // Update level indicator
+  const lvlEl = document.getElementById('kf-level');
+  if (lvlEl) lvlEl.style.height = (state.liquidLevel * 100) + '%';
+
+  // ---- INTAKE BOX ----
+  const ibX = 40, ibY = 70, ibW = 80, ibH = 140;
+  roundRect(ctx, ibX, ibY, ibW, ibH, 3, C.steel, C.border, 1);
+  // dirty fluid fill level
+  const fillH = ibH * lev;
+  roundRect(ctx, ibX+2, ibY+ibH-fillH, ibW-4, fillH, 2, 'rgba(184,134,11,0.35)');
+  drawLabel(ctx, ibX+8, ibY+12, 'Intake', C.text);
+
+  // ---- FILTER TROUGH ----
+  const ftX = 160, ftY = 70, ftW = 200, ftH = 140;
+  roundRect(ctx, ftX, ftY, ftW, ftH, 3, C.steel, C.border, 1);
+  const ftFill = ftH * lev;
+  roundRect(ctx, ftX+2, ftY+ftH-ftFill, ftW-4, ftFill, 2, 'rgba(184,134,11,0.28)');
+
+  // filter fleece band
+  const fleeceY = ftY + ftH - 30;
+  ctx.fillStyle = regen ? '#ff6b35' : C.fleece;
+  ctx.fillRect(ftX + 10, fleeceY, ftW - 20, 8);
+  // cake on fleece
+  if (state.cakeLevel > 0.05) {
+    ctx.fillStyle = C.sludge;
+    ctx.fillRect(ftX + 10, fleeceY - state.cakeLevel * 25, ftW - 20, state.cakeLevel * 25);
+  }
+  drawLabel(ctx, ftX + 8, ftY + 14, 'Filter Trough', C.text);
+
+  // Moving belt animation
+  if (regen) {
+    state.beltOffset = (state.beltOffset + 2) % 30;
+    ctx.save();
+    ctx.strokeStyle = '#ff6b35';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([8, 8]);
+    ctx.lineDashOffset = -state.beltOffset;
+    ctx.beginPath();
+    ctx.moveTo(ftX, fleeceY + 4);
+    ctx.lineTo(ftX + ftW, fleeceY + 4);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+    drawLabel(ctx, ftX + 60, fleeceY - 5, 'Belt advancing', '#ff6b35');
+  }
+
+  // ---- CLEAN TANK ----
+  const ctX = 420, ctY = 70, ctW = 120, ctH = 140;
+  roundRect(ctx, ctX, ctY, ctW, ctH, 3, C.steel, C.border, 1);
+  const cleanFill = ctH * Math.max(0, 0.6 - state.cakeLevel * 0.3);
+  roundRect(ctx, ctX+2, ctY+ctH-cleanFill, ctW-4, cleanFill, 2, 'rgba(0,212,255,0.25)');
+  drawLabel(ctx, ctX + 8, ctY + 14, 'Clean Tank', C.text);
+
+  // ---- SLUDGE CONTAINER ----
+  roundRect(ctx, 580, 160, 70, 60, 3, C.steel, C.border, 1);
+  ctx.fillStyle = 'rgba(92,74,42,0.5)';
+  ctx.fillRect(582, 182, 66, 36);
+  drawLabel(ctx, 583, 175, 'Sludge', C.sludge);
+
+  // ---- PIPES ----
+  // Inlet (top of intake)
+  drawPipe(ctx, 80, 50, 80, 70, 6, C.steelL, C.dirty, t);
+  // Intake → filter
+  drawPipe(ctx, 120, 140, 160, 140, 5, C.steelL, C.dirty, t);
+  // Filter → clean
+  drawPipe(ctx, 360, 140, 420, 140, 5, C.steelL, C.clean, t);
+  // Clean → pump
+  drawPipe(ctx, 480, 210, 480, 250, 5, C.steelL, C.clean, t);
+  drawPipe(ctx, 480, 250, W - 30, 250, 5, C.steelL, C.clean, t);
+
+  // Dirty fluid drip into intake
+  if (t % 8 === 0) {
+    state.particles.push(new Particle(60 + Math.random()*40, 50, 0, 1.5, C.dirty, 2));
+  }
+
+  // Clean flow drip
+  if (t % 10 === 0 && !regen) {
+    state.particles.push(new Particle(430 + Math.random()*80, ctY + ctH - cleanFill - 5, 0.2, 0.8, C.clean, 1.5));
+  }
+
+  // Pump symbol
+  drawCircle(ctx, W - 60, 250, 18, C.steelL, C.border);
+  ctx.fillStyle = C.clean;
+  ctx.font = '10px DM Mono';
+  ctx.textAlign = 'center';
+  ctx.fillText('P', W-60, 254);
+  ctx.textAlign = 'left';
+  drawLabel(ctx, W-90, 240, 'KSS pump');
+
+  drawLabel(ctx, 40, 240, regen ? '◉ REGEN ACTIVE' : '◉ FILTERING', regen ? '#ff6b35' : C.clean);
+}
+
+function drawCircle(ctx, x, y, r, fill, stroke) {
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI * 2);
+  if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+  if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1; ctx.stroke(); }
+}
+
+// ============================================================
+// KF-E — Belt filter with brush
+// ============================================================
+function drawKFE(ctx, W, H, state, regen) {
+  const t = state.time;
+  if (!regen && state.cakeLevel < 0.8) state.cakeLevel += 0.0008;
+  if (regen) {
+    state.cakeLevel = Math.max(0, state.cakeLevel - 0.012);
+    state.liquidLevel = Math.max(0.25, state.liquidLevel - 0.005);
+  } else {
+    state.liquidLevel = Math.min(0.2 + state.cakeLevel * 0.6, 0.85);
+  }
+  const lvlEl = document.getElementById('kfe-level');
+  if (lvlEl) lvlEl.style.height = (state.liquidLevel * 100) + '%';
+
+  // Intake
+  roundRect(ctx, 30, 70, 80, 140, 3, C.steel, C.border, 1);
+  roundRect(ctx, 32, 70 + 140*(1-state.liquidLevel), 76, 140*state.liquidLevel, 2, 'rgba(184,134,11,0.35)');
+  drawLabel(ctx, 38, 82, 'Inlet', C.text);
+
+  // Filter trough
+  roundRect(ctx, 160, 70, 200, 140, 3, C.steel, C.border, 1);
+  roundRect(ctx, 162, 70+140*(1-state.liquidLevel), 196, 140*state.liquidLevel, 2, 'rgba(184,134,11,0.28)');
+  // fleece
+  ctx.fillStyle = regen ? '#ff6b35' : C.fleece;
+  ctx.fillRect(170, 180, 180, 8);
+  if (state.cakeLevel > 0.05) {
+    ctx.fillStyle = C.sludge;
+    ctx.fillRect(170, 180 - state.cakeLevel * 25, 180, state.cakeLevel * 25);
+  }
+  drawLabel(ctx, 168, 82, 'Filter Trough', C.text);
+
+  // Brush unit (visible during regen)
+  if (regen) {
+    const bX = 340, bY = 150;
+    roundRect(ctx, bX, bY, 60, 50, 4, '#1a2a1a', '#00ff88', 1.5);
+    drawLabel(ctx, bX + 4, bY + 12, 'Brush', '#00ff88');
+    // brush bristles animation
+    for (let i = 0; i < 8; i++) {
+      ctx.strokeStyle = '#00ff88';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      const bx = bX + 5 + i * 7;
+      const off = Math.sin(t * 0.3 + i) * 4;
+      ctx.moveTo(bx, bY + 30);
+      ctx.lineTo(bx + off, bY + 48);
+      ctx.stroke();
+    }
+    drawLabel(ctx, 180, 165, 'Belt cleaning →', '#00ff88');
+  }
+
+  // Clean tank
+  roundRect(ctx, 430, 70, 110, 140, 3, C.steel, C.border, 1);
+  const cf = 140 * Math.max(0, 0.6 - state.cakeLevel * 0.3);
+  roundRect(ctx, 432, 70+140-cf, 106, cf, 2, 'rgba(0,212,255,0.25)');
+  drawLabel(ctx, 438, 82, 'Clean Tank', C.text);
+
+  // Pipes
+  drawPipe(ctx, 70, 50, 70, 70, 6, C.steelL, C.dirty, t);
+  drawPipe(ctx, 110, 140, 160, 140, 5, C.steelL, C.dirty, t);
+  drawPipe(ctx, 360, 140, 430, 140, 5, C.steelL, C.clean, t);
+
+  if (t % 8 === 0) state.particles.push(new Particle(45+Math.random()*40,50,0,1.5,C.dirty,2));
+  if (t % 10 === 0 && !regen) state.particles.push(new Particle(440+Math.random()*90,200,0.2,0.8,C.clean,1.5));
+
+  drawLabel(ctx, 40, 240, regen ? '◉ BRUSH REGEN ACTIVE' : '◉ FILTERING', regen ? '#00ff88' : C.clean);
+}
+
+// ============================================================
+// MICRO — MicroPur centrifugal
+// ============================================================
+function drawMicro(ctx, W, H, state, regen) {
+  const t = state.time;
+  const cx = W / 2, cy = 145;
+  const R = 90;
+
+  if (!regen) state.pressureDiff = Math.min(1, state.pressureDiff + 0.001);
+  else state.pressureDiff = Math.max(0, state.pressureDiff - 0.015);
+
+  // outer housing
+  drawCircle(ctx, cx, cy, R, C.steel, C.border);
+  // dirty fluid rim
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(cx, cy, R - 2, 0, Math.PI * 2);
+  ctx.clip();
+  ctx.fillStyle = `rgba(184,134,11,${0.1 + state.pressureDiff * 0.3})`;
+  ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
+  ctx.restore();
+
+  // tangential inlet swirl
+  const swirls = 12;
+  ctx.strokeStyle = `rgba(212,160,23,${0.5 - state.pressureDiff * 0.3})`;
+  ctx.lineWidth = 1;
+  for (let i = 0; i < swirls; i++) {
+    const angle = (t * 0.04 + i * (Math.PI * 2 / swirls)) % (Math.PI * 2);
+    const r1 = 20 + i * 5;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r1, angle, angle + 0.8);
+    ctx.stroke();
+  }
+
+  // filter element cylinder
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(cx, cy, 42, 0, Math.PI * 2);
+  ctx.fillStyle = '#1a2535';
+  ctx.fill();
+  ctx.strokeStyle = C.border;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.restore();
+
+  // clean interior
+  drawCircle(ctx, cx, cy, 30, `rgba(0,212,255,${0.15 + (1-state.pressureDiff)*0.2})`, C.clean);
+
+  // cake layer on element
+  if (state.pressureDiff > 0.1) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, 42 + state.pressureDiff * 18, 0, Math.PI * 2);
+    ctx.arc(cx, cy, 42, 0, Math.PI * 2, true);
+    ctx.fillStyle = `rgba(92,74,42,${state.pressureDiff * 0.7})`;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // Labels
+  drawLabel(ctx, cx - 15, cy + 4, 'FILTER', C.clean);
+  drawLabel(ctx, cx - 12, cy + 18, 'ELEM', C.clean);
+
+  // Tangential inlet pipe
+  drawPipe(ctx, 30, cy, cx - R, cy - 20, 8, C.steelL, C.dirty, t);
+  drawLabel(ctx, 15, cy - 8, 'Inlet', C.text);
+
+  // Outlet pipe (clean)
+  drawPipe(ctx, cx, cy - R, cx, 20, 6, C.steelL, C.clean, regen ? null : t);
+  drawLabel(ctx, cx + 8, 35, 'Filtrate out', C.clean);
+
+  // Sludge drain
+  drawPipe(ctx, cx, cy + R, cx, H - 30, 6, C.steelL, regen ? C.sludge : null, regen ? t : null);
+  drawLabel(ctx, cx + 8, H - 20, 'Sludge drain', C.sludge);
+
+  // Back-flush during regen
+  if (regen) {
+    ctx.strokeStyle = '#ff6b35';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([4, 4]);
+    ctx.lineDashOffset = -(t * 2) % 8;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 36, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    drawLabel(ctx, cx - 55, cy - 55, 'BACK-FLUSH', '#ff6b35');
+  }
+
+  // Pressure gauge
+  const gX = W - 80, gY = 60;
+  drawCircle(ctx, gX, gY, 28, C.steel, C.border);
+  const sweep = Math.PI * 1.5 * state.pressureDiff;
+  ctx.strokeStyle = state.pressureDiff > 0.7 ? '#ff4444' : C.accent;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc(gX, gY, 20, -Math.PI * 0.75, -Math.PI * 0.75 + sweep);
+  ctx.stroke();
+  drawLabel(ctx, gX - 18, gY + 42, 'PRESSURE', C.text);
+
+  const pct = Math.round(state.pressureDiff * 100);
+  ctx.fillStyle = state.pressureDiff > 0.7 ? '#ff4444' : C.accent;
+  ctx.font = '11px DM Mono';
+  ctx.textAlign = 'center';
+  ctx.fillText(pct + '%', gX, gY + 4);
+  ctx.textAlign = 'left';
+
+  drawLabel(ctx, 30, H - 20, regen ? '◉ BACK-FLUSH ACTIVE' : '◉ CENTRIFUGAL FILTER', regen ? '#ff6b35' : C.clean);
+}
+
+// ============================================================
+// VLO — Vacuum filter
+// ============================================================
+function drawVLO(ctx, W, H, state, regen) {
+  const t = state.time;
+  if (!regen && state.cakeLevel < 0.9) state.cakeLevel += 0.0007;
+  if (regen) state.cakeLevel = Math.max(0, state.cakeLevel - 0.015);
+
+  const vacuum = state.cakeLevel * 0.9;
+
+  // Lift pump
+  drawCircle(ctx, 60, 140, 22, C.steel, C.border);
+  ctx.fillStyle = C.dirty;
+  ctx.font = '10px DM Mono'; ctx.textAlign = 'center';
+  ctx.fillText('LP', 60, 144); ctx.textAlign = 'left';
+  drawLabel(ctx, 38, 175, 'Lift pump');
+
+  // Intake box
+  roundRect(ctx, 110, 90, 80, 100, 3, C.steel, C.border, 1);
+  roundRect(ctx, 112, 90+100*(1-state.cakeLevel*0.6), 76, 100*state.cakeLevel*0.6, 2, 'rgba(184,134,11,0.35)');
+  drawLabel(ctx, 118, 102, 'Intake', C.text);
+
+  // Filter chamber
+  roundRect(ctx, 240, 60, 200, 160, 4, C.steel, C.border, 1.5);
+  // continuous roll
+  const rollY = 60 + 160 - 30;
+  ctx.fillStyle = regen ? '#ff6b35' : C.fleece;
+  ctx.fillRect(250, rollY, 180, 10);
+  // cake
+  ctx.fillStyle = C.sludge;
+  ctx.fillRect(250, rollY - state.cakeLevel * 30, 180, state.cakeLevel * 30);
+
+  // Vacuum indicator
+  const vX = 370, vY = 95;
+  drawCircle(ctx, vX, vY, 22, C.steel, C.border);
+  ctx.strokeStyle = vacuum > 0.6 ? '#a855f7' : C.border;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc(vX, vY, 15, -Math.PI, -Math.PI + Math.PI * 2 * vacuum);
+  ctx.stroke();
+  ctx.fillStyle = vacuum > 0.6 ? '#a855f7' : C.text;
+  ctx.font = '8px DM Mono'; ctx.textAlign = 'center';
+  ctx.fillText('VAC', vX, vY - 3);
+  ctx.fillText(Math.round(vacuum * 100) + '%', vX, vY + 9);
+  ctx.textAlign = 'left';
+
+  drawLabel(ctx, 252, 75, 'Filter Chamber', C.text);
+
+  // Vacuum pump
+  roundRect(ctx, 280, 30, 80, 24, 2, C.steel, C.border, 1);
+  ctx.strokeStyle = vacuum > 0.6 ? '#a855f7' : C.border;
+  ctx.lineWidth = 1;
+  ctx.setLineDash([3, 3]);
+  ctx.lineDashOffset = -(t * 1.5) % 6;
+  ctx.beginPath();
+  ctx.moveTo(320, 54); ctx.lineTo(320, 70);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  drawLabel(ctx, 288, 45, 'Vacuum pump', vacuum > 0.6 ? '#a855f7' : C.text);
+
+  // Clean tank
+  roundRect(ctx, 480, 90, 120, 100, 3, C.steel, C.border, 1);
+  const cf = 100 * (0.5 + (1 - state.cakeLevel) * 0.4);
+  roundRect(ctx, 482, 90+100-cf, 116, cf, 2, 'rgba(0,212,255,0.25)');
+  drawLabel(ctx, 488, 102, 'Clean Tank', C.text);
+
+  // Pipes
+  drawPipe(ctx, 60, 118, 60, 90, 6, C.steelL, C.dirty, t);
+  drawPipe(ctx, 60, 90, 110, 90, 6, C.steelL, C.dirty, t);
+  drawPipe(ctx, 190, 140, 240, 140, 6, C.steelL, C.dirty, t);
+  drawPipe(ctx, 440, 140, 480, 140, 6, C.steelL, C.clean, !regen ? t : null);
+
+  if (regen) {
+    state.beltOffset = (state.beltOffset + 2) % 20;
+    ctx.strokeStyle = '#a855f7';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([6, 6]);
+    ctx.lineDashOffset = -state.beltOffset;
+    ctx.beginPath();
+    ctx.moveTo(250, rollY + 5); ctx.lineTo(430, rollY + 5);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    drawLabel(ctx, 260, rollY - 10, 'Roll advancing →', '#a855f7');
+  }
+
+  if (t % 9 === 0) state.particles.push(new Particle(130+Math.random()*40,185,0,-1.2,C.dirty,2));
+  if (t % 11 === 0 && !regen) state.particles.push(new Particle(490+Math.random()*90,185,0.1,0.8,C.clean,1.5));
+
+  drawLabel(ctx, 30, H - 20, regen ? '◉ BELT ADVANCING' : '◉ VACUUM FILTERING', regen ? '#a855f7' : C.clean);
+}
+
+// ============================================================
+// GRAVITY BELT
+// ============================================================
+function drawGravity(ctx, W, H, state, regen) {
+  const t = state.time;
+  if (!regen && state.cakeLevel < 0.85) state.cakeLevel += 0.0008;
+  if (regen) {
+    state.cakeLevel = Math.max(0, state.cakeLevel - 0.012);
+    state.liquidLevel = Math.max(0.25, state.liquidLevel - 0.006);
+  } else {
+    state.liquidLevel = Math.min(0.2 + state.cakeLevel * 0.55, 0.82);
+  }
+  const lvlEl = document.getElementById('gravity-level');
+  if (lvlEl) lvlEl.style.height = (state.liquidLevel * 100) + '%';
+
+  // Inlet
+  roundRect(ctx, 30, 70, 90, 150, 3, C.steel, C.border, 1);
+  roundRect(ctx, 32, 70+150*(1-state.liquidLevel), 86, 150*state.liquidLevel, 2, 'rgba(184,134,11,0.32)');
+  drawLabel(ctx, 40, 82, 'Inlet box', C.text);
+
+  // Main filter trough (wider)
+  roundRect(ctx, 170, 50, 260, 170, 4, C.steel, C.border, 1.5);
+  roundRect(ctx, 172, 50+170*(1-state.liquidLevel), 256, 170*state.liquidLevel, 3, 'rgba(184,134,11,0.25)');
+
+  // Fleece belt
+  const fleeceY = 195;
+  ctx.fillStyle = regen ? '#ff6b35' : C.fleece;
+  ctx.fillRect(180, fleeceY, 240, 10);
+  ctx.fillStyle = C.sludge;
+  if (state.cakeLevel > 0.05) ctx.fillRect(180, fleeceY - state.cakeLevel * 28, 240, state.cakeLevel * 28);
+  drawLabel(ctx, 178, 64, 'Filter Trough (Gravity)', C.text);
+
+  // Belt drive rollers
+  drawCircle(ctx, 180, fleeceY + 5, 8, C.steelL, C.border);
+  drawCircle(ctx, 420, fleeceY + 5, 8, C.steelL, C.border);
+  if (regen) {
+    state.beltOffset = (state.beltOffset + 2.5) % 20;
+    ctx.strokeStyle = '#ff6b35';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([5, 7]);
+    ctx.lineDashOffset = -state.beltOffset;
+    ctx.beginPath();
+    ctx.moveTo(188, fleeceY + 5); ctx.lineTo(412, fleeceY + 5);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // Clean tank
+  roundRect(ctx, 470, 70, 130, 150, 3, C.steel, C.border, 1);
+  const cf = 150 * (0.55 + (1-state.cakeLevel)*0.35);
+  roundRect(ctx, 472, 70+150-cf, 126, cf, 2, 'rgba(0,212,255,0.22)');
+  drawLabel(ctx, 480, 82, 'Clean Tank', C.text);
+
+  // Sludge at end
+  roundRect(ctx, 170, 225, 90, 40, 3, C.steel, C.border, 1);
+  ctx.fillStyle = 'rgba(92,74,42,0.5)';
+  ctx.fillRect(172, 235, 86, 28);
+  drawLabel(ctx, 182, 237, 'Sludge', C.sludge);
+
+  // Pipes
+  drawPipe(ctx, 75, 50, 75, 70, 6, C.steelL, C.dirty, t);
+  drawPipe(ctx, 120, 145, 170, 145, 6, C.steelL, C.dirty, t);
+  drawPipe(ctx, 430, 145, 470, 145, 6, C.steelL, C.clean, t);
+
+  if (t % 8 === 0) state.particles.push(new Particle(40+Math.random()*50,55,0,1.5,C.dirty,2));
+  if (t % 10 === 0 && !regen) state.particles.push(new Particle(480+Math.random()*100,215,0.2,0.8,C.clean,1.5));
+
+  drawLabel(ctx, 30, H - 20, regen ? '◉ BELT REGEN ACTIVE' : '◉ GRAVITY FILTERING', regen ? '#ff6b35' : C.clean);
+}
+
+// ============================================================
+// VRF — Vacuum Rotation Filter
+// ============================================================
+function drawVRF(ctx, W, H, state, regen) {
+  const t = state.time;
+  if (!regen) { state.pressureDiff = Math.min(1, state.pressureDiff + 0.001); }
+  else { state.pressureDiff = Math.max(0, state.pressureDiff - 0.015); }
+
+  const cx = 310, cy = 145, R = 90;
+
+  // Outer container
+  roundRect(ctx, cx - R - 20, cy - R - 20, (R + 20) * 2, (R + 20) * 2, 6, C.steel, C.border, 1.5);
+
+  // Dirty fluid fill
+  const fillY = cy - R + (R * 2 * (1 - state.pressureDiff * 0.4));
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(cx - R - 18, cy - R - 18, (R + 18) * 2, (R + 18) * 2, 4);
+  ctx.clip();
+  ctx.fillStyle = `rgba(184,134,11,${0.2 + state.pressureDiff * 0.15})`;
+  ctx.fillRect(cx - R - 18, fillY, (R + 18) * 2, cy + R + 18 - fillY);
+  ctx.restore();
+
+  // Rotating drum
+  state.drumAngle = (state.drumAngle + (regen ? 0.04 : 0.008)) % (Math.PI * 2);
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(state.drumAngle);
+  drawCircle(ctx, 0, 0, R, 'transparent', C.border);
+  // filter element texture on drum
+  for (let i = 0; i < 16; i++) {
+    const a = (i / 16) * Math.PI * 2;
+    ctx.strokeStyle = `rgba(58,69,96,${0.8 - state.pressureDiff * 0.5})`;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(Math.cos(a) * 60, Math.sin(a) * 60);
+    ctx.lineTo(Math.cos(a) * R - 2, Math.sin(a) * R - 2);
+    ctx.stroke();
+  }
+  // cake on drum surface (outer ring)
+  if (state.pressureDiff > 0.1) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(0, 0, R + state.pressureDiff * 14, 0, Math.PI * 2);
+    ctx.arc(0, 0, R, 0, Math.PI * 2, true);
+    ctx.fillStyle = `rgba(92,74,42,${state.pressureDiff * 0.65})`;
+    ctx.fill();
+    ctx.restore();
+  }
+  drawCircle(ctx, 0, 0, 50, '#0a1020', C.border);
+  ctx.restore();
+
+  // Clean center
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(cx, cy, 45, 0, Math.PI * 2);
+  ctx.fillStyle = `rgba(0,212,255,${0.1 + (1-state.pressureDiff)*0.15})`;
+  ctx.fill();
+  ctx.restore();
+  ctx.fillStyle = C.clean;
+  ctx.font = '10px DM Mono'; ctx.textAlign = 'center';
+  ctx.fillText('CLEAN', cx, cy - 4);
+  ctx.fillText('FLUID', cx, cy + 10);
+  ctx.textAlign = 'left';
+
+  // Scraper belt (visible during regen)
+  if (regen) {
+    state.beltOffset = (state.beltOffset + 3) % 30;
+    ctx.strokeStyle = '#ff6b35';
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.setLineDash([8, 8]);
+    ctx.lineDashOffset = -state.beltOffset;
+    ctx.beginPath();
+    ctx.moveTo(cx + R + 20, cy - 30);
+    ctx.lineTo(cx + R + 20, cy + 60);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    drawLabel(ctx, cx + R + 28, cy, 'Scraper →', '#ff6b35');
+  }
+
+  // Inlet pipe
+  drawPipe(ctx, 30, cy - 20, cx - R - 20, cy - 20, 8, C.steelL, C.dirty, t);
+  drawLabel(ctx, 15, cy - 30, 'Inlet', C.text);
+
+  // Outlet pipe (clean)
+  drawPipe(ctx, cx, cy - R - 20, cx, 20, 6, C.steelL, C.clean, t);
+  drawLabel(ctx, cx + 8, 30, 'Clean out', C.clean);
+
+  // Sludge out
+  drawPipe(ctx, cx + R + 20, cy + 30, W - 30, cy + 30, 6, C.steelL, regen ? C.sludge : null, regen ? t : null);
+  roundRect(ctx, W - 30 - 60, cy + 10, 60, 40, 2, C.steel, C.border, 1);
+  ctx.fillStyle = 'rgba(92,74,42,0.5)';
+  ctx.fillRect(W - 88, cy + 12, 56, 36);
+  drawLabel(ctx, W - 82, cy + 25, 'Sludge', C.sludge);
+
+  // Underpressure gauge
+  const gX = 60, gY = 60;
+  drawCircle(ctx, gX, gY, 28, C.steel, C.border);
+  ctx.strokeStyle = state.pressureDiff > 0.7 ? '#a855f7' : C.border;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc(gX, gY, 20, -Math.PI * 0.75, -Math.PI * 0.75 + Math.PI * 1.5 * state.pressureDiff);
+  ctx.stroke();
+  ctx.fillStyle = state.pressureDiff > 0.7 ? '#a855f7' : C.text;
+  ctx.font = '8px DM Mono'; ctx.textAlign = 'center';
+  ctx.fillText('UNDP', gX, gY - 3);
+  ctx.fillText(Math.round(state.pressureDiff * 100) + '%', gX, gY + 9);
+  ctx.textAlign = 'left';
+  drawLabel(ctx, 38, 100, 'Underpressure', C.text);
+
+  if (t % 9 === 0) state.particles.push(new Particle(50+Math.random()*60, cy-15, 0.8, 0.2, C.dirty, 2));
+  if (t % 11 === 0 && !regen) state.particles.push(new Particle(cx-15+Math.random()*30, cy-45-state.pressureDiff*10, 0, -1.2, C.clean, 1.5));
+
+  drawLabel(ctx, 30, H - 20, regen ? '◉ DRUM ROTATING / BACKWASH' : '◉ DRUM FILTERING', regen ? '#ff6b35' : C.clean);
+}
+
+// ============================================================
+// INIT DEFAULT PANEL
+// ============================================================
+window.addEventListener('load', () => {
+  // Animate steps on load
+  animateSteps('kf');
+  initSim('kf');
+});
+
+// Handle resize
+window.addEventListener('resize', () => {
+  Object.keys(sims).forEach(id => {
+    const canvas = document.getElementById('canvas-' + id);
+    if (canvas) {
+      canvas.width = canvas.offsetWidth;
+    }
+  });
+});
+</script>
+</body>
+</html>
